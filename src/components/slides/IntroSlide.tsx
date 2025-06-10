@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Brain, Zap, Code, ExternalLink, Cpu, Network, Bot } from "lucide-react";
+import { Zap, Code, ExternalLink, Cpu, Network, Bot } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -16,7 +16,7 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 text-center relative overflow-hidden">
-      {/* Enhanced AI Brain Visual */}
+      {/* Enhanced AI Network Visual */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
@@ -24,25 +24,59 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         className="mb-8 relative"
       >
         <div className="relative inline-block">
-          {/* Multiple rotating rings */}
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 rounded-full border-2 border-blue-400/30"
-            style={{ width: "160px", height: "160px" }}
-          />
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-4 rounded-full border border-purple-400/40"
-          />
+          {/* Circuit board pattern */}
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-8 rounded-full border border-green-400/30"
-          />
-          
-          {/* Central AI brain */}
+            className="w-40 h-40 relative"
+          >
+            {/* Main circuit nodes */}
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-4 h-4 bg-blue-400 rounded-full"
+                style={{
+                  left: "50%",
+                  top: "50%",
+                  transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-60px)`,
+                }}
+                animate={{ 
+                  scale: [1, 1.3, 1],
+                  opacity: [0.6, 1, 0.6]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  delay: i * 0.2 
+                }}
+              />
+            ))}
+            
+            {/* Connecting lines */}
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={`line-${i}`}
+                className="absolute w-0.5 h-16 bg-gradient-to-t from-blue-400/20 via-blue-400/80 to-blue-400/20"
+                style={{
+                  left: "50%",
+                  top: "50%",
+                  transformOrigin: "50% 100%",
+                  transform: `translateX(-50%) rotate(${i * 45}deg)`,
+                }}
+                animate={{ 
+                  opacity: [0.3, 0.8, 0.3],
+                  scaleY: [0.8, 1.1, 0.8]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  delay: i * 0.1,
+                }}
+              />
+            ))}
+          </motion.div>
+
+          {/* Central AI processor */}
           <motion.div
             animate={{ 
               boxShadow: [
@@ -52,35 +86,42 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
               ]
             }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="w-32 h-32 bg-gradient-to-br from-blue-500 via-purple-600 to-green-500 rounded-full flex items-center justify-center relative z-10 mx-auto"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-600 to-green-500 rounded-lg flex items-center justify-center relative z-10"
           >
             <motion.div
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <Brain className="w-16 h-16 text-white" />
+              <Cpu className="w-10 h-10 text-white" />
             </motion.div>
           </motion.div>
 
-          {/* Neural connection lines */}
-          {[...Array(8)].map((_, i) => (
+          {/* Data flow particles */}
+          {[...Array(16)].map((_, i) => (
             <motion.div
-              key={i}
-              className="absolute w-1 h-12 bg-gradient-to-t from-transparent via-blue-400/60 to-transparent"
-              style={{
-                left: "50%",
-                top: "10%",
-                transformOrigin: "50% 200px",
-                transform: `rotate(${i * 45}deg)`,
-              }}
-              animate={{ 
+              key={`particle-${i}`}
+              className="absolute w-1 h-1 bg-blue-400 rounded-full"
+              animate={{
+                x: [
+                  Math.cos((i * 22.5) * Math.PI / 180) * 80,
+                  Math.cos((i * 22.5) * Math.PI / 180) * 40,
+                  Math.cos((i * 22.5) * Math.PI / 180) * 80
+                ],
+                y: [
+                  Math.sin((i * 22.5) * Math.PI / 180) * 80,
+                  Math.sin((i * 22.5) * Math.PI / 180) * 40,
+                  Math.sin((i * 22.5) * Math.PI / 180) * 80
+                ],
                 opacity: [0, 1, 0],
-                height: [40, 48, 40]
               }}
               transition={{
-                duration: 2.5,
+                duration: 4,
                 repeat: Infinity,
-                delay: i * 0.3,
+                delay: i * 0.1,
+              }}
+              style={{
+                left: "50%",
+                top: "50%",
               }}
             />
           ))}

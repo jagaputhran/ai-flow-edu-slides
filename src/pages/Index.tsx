@@ -14,6 +14,7 @@ import TransformerArchitectureSlide from "@/components/slides/TransformerArchite
 import GenerativeAISlide from "@/components/slides/GenerativeAISlide";
 import RAGSlide from "@/components/slides/RAGSlide";
 import AgenticAISlide from "@/components/slides/AgenticAISlide";
+import AgenticEvolutionSlide from "@/components/slides/AgenticEvolutionSlide";
 import UseCasesSlide from "@/components/slides/UseCasesSlide";
 import RisksEthicsSlide from "@/components/slides/RisksEthicsSlide";
 import FutureSlide from "@/components/slides/FutureSlide";
@@ -33,6 +34,7 @@ const Index = () => {
     { component: GenerativeAISlide, title: "Generative AI" },
     { component: RAGSlide, title: "RAG Systems" },
     { component: AgenticAISlide, title: "Agentic AI" },
+    { component: AgenticEvolutionSlide, title: "Evolution of Agentic AI" },
     { component: UseCasesSlide, title: "Use Cases" },
     { component: RisksEthicsSlide, title: "Risks & Ethics" },
     { component: FutureSlide, title: "Future of AI" },
