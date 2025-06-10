@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Clock, Zap, Bot, Users, Target, Calendar, TrendingUp, Code, Search, DollarSign, ShoppingCart } from "lucide-react";
+import { Clock, Zap, Bot, Users, Target, Calendar, TrendingUp, Code, Search, DollarSign, ShoppingCart, Play } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -145,7 +145,7 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.8 }}
-        className="bg-gradient-to-br from-indigo-500/20 to-purple-600/10 rounded-2xl border border-indigo-400/30 p-8"
+        className="mb-16 bg-gradient-to-br from-indigo-500/20 to-purple-600/10 rounded-2xl border border-indigo-400/30 p-8"
       >
         <h2 className="text-2xl font-bold text-white mb-6 text-center">Use Cases</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -168,6 +168,43 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
               <p className="text-white/70 text-sm">{useCase.description}</p>
             </motion.div>
           ))}
+        </div>
+      </motion.div>
+
+      {/* Agentic AI Animation Prompt */}
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+        className="bg-gradient-to-br from-green-500/20 to-teal-600/10 rounded-2xl border border-green-400/30 p-8"
+      >
+        <div className="text-center mb-6">
+          <motion.div
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            className="inline-block w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mb-4"
+          >
+            <Play className="w-6 h-6 text-green-400" />
+          </motion.div>
+          <h2 className="text-2xl font-bold text-white mb-4">Agentic AI Animation Prompt</h2>
+        </div>
+        
+        <div className="bg-slate-800/50 rounded-lg p-6 border border-green-400/20">
+          <p className="text-green-400 font-medium mb-4">Visual Diagram Creation Prompt:</p>
+          <div className="text-white/80 text-sm leading-relaxed space-y-4">
+            <p>"Create an animated diagram showing how Agentic AI works. Begin with a robot or AI agent icon receiving a goal from a human (e.g., 'Book a flight to Paris'). Then show the following animated flow:</p>
+            
+            <div className="pl-4 space-y-2">
+              <p>• <span className="text-blue-400">Goal → Planning:</span> AI breaks task into steps (animated checklist)</p>
+              <p>• <span className="text-purple-400">Tool Usage:</span> Show icons like web browser, calculator, Python script, API plug, etc.</p>
+              <p>• <span className="text-orange-400">Execution Loop:</span> Animate agent taking actions, observing results, adjusting plan</p>
+              <p>• <span className="text-cyan-400">Memory:</span> Visualize short-term memory (chat bubble) and long-term memory (database icon)</p>
+              <p>• <span className="text-yellow-400">Feedback Loop:</span> Circular arrows showing self-correction or user feedback</p>
+              <p>• <span className="text-green-400">Success:</span> Agent returns with a booked flight or completed task</p>
+            </div>
+            
+            <p>Include smooth transitions, clear icons, labels, and color-coded modules. Style should be clean, modern, and slightly playful. Add a timeline at the bottom showing evolution from Static AI → Prompt Chaining → Autonomous Agents → Multi-Agent Systems."</p>
+          </div>
         </div>
       </motion.div>
     </div>
