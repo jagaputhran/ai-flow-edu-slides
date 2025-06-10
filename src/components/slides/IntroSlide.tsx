@@ -93,7 +93,25 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         transition={{ duration: 0.8, delay: 0.4 }}
         className="text-5xl md:text-7xl font-bold text-white mb-6"
       >
-        <span className="text-blue-400">{slideNumber}.</span> AI with{" "}
+        <span className="text-blue-400">{slideNumber}.</span> Introduction
+      </motion.h1>
+
+      <motion.p
+        initial={{ y: 30, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto"
+      >
+        Welcome to your comprehensive journey through Artificial Intelligence.
+      </motion.p>
+
+      <motion.p
+        initial={{ y: 30, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.7 }}
+        className="text-lg text-white/70 mb-12 max-w-2xl mx-auto"
+      >
+        From foundational concepts to cutting-edge applications with{" "}
         <motion.span
           animate={{ 
             background: [
@@ -103,20 +121,11 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
             ]
           }}
           transition={{ duration: 4, repeat: Infinity }}
-          className="bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent font-extrabold"
+          className="bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent font-bold"
         >
           JAGA
-        </motion.span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ y: 30, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto"
-      >
-        Welcome to your comprehensive journey through Artificial Intelligence.
-        From foundational concepts to cutting-edge applications with interactive learning.
+        </motion.span>{" "}
+        interactive learning.
       </motion.p>
 
       {/* Enhanced feature highlights */}

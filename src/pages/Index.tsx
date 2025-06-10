@@ -10,6 +10,7 @@ import WhatIsAISlide from "@/components/slides/WhatIsAISlide";
 import EvolutionSlide from "@/components/slides/EvolutionSlide";
 import MLvsDLSlide from "@/components/slides/MLvsDLSlide";
 import NeuralNetworksSlide from "@/components/slides/NeuralNetworksSlide";
+import TransformerArchitectureSlide from "@/components/slides/TransformerArchitectureSlide";
 import GenerativeAISlide from "@/components/slides/GenerativeAISlide";
 import RAGSlide from "@/components/slides/RAGSlide";
 import AgenticAISlide from "@/components/slides/AgenticAISlide";
@@ -28,6 +29,7 @@ const Index = () => {
     { component: EvolutionSlide, title: "Evolution of AI" },
     { component: MLvsDLSlide, title: "ML vs DL" },
     { component: NeuralNetworksSlide, title: "Neural Networks" },
+    { component: TransformerArchitectureSlide, title: "Transformer Architecture" },
     { component: GenerativeAISlide, title: "Generative AI" },
     { component: RAGSlide, title: "RAG Systems" },
     { component: AgenticAISlide, title: "Agentic AI" },
