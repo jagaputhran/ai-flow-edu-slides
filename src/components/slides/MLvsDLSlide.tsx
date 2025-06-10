@@ -1,5 +1,5 @@
 
-import { motion } from "framer-content";
+import { motion } from "framer-motion";
 import { GitBranch, Layers, ArrowRight } from "lucide-react";
 
 interface SlideProps {
