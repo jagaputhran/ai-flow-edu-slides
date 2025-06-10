@@ -80,7 +80,7 @@ const Index = () => {
         <Progress value={scrollProgress} className="h-1 rounded-none" />
         <div className="flex items-center justify-between px-6 py-4">
           <div className="text-white font-semibold">
-            AI Learning Session
+            AI with JAGA
           </div>
           <div className="text-white/70 text-sm">
             {currentSlide + 1} / {slides.length}
