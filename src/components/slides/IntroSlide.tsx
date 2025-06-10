@@ -1,6 +1,5 @@
-
 import { motion } from "framer-motion";
-import { Zap, Code, ExternalLink, Cpu, Network, Bot } from "lucide-react";
+import { Zap, Code, ExternalLink, Cpu, Network, Bot, Brain } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
