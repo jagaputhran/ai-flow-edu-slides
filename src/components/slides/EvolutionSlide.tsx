@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { ArrowRight, Settings, TrendingUp, Layers, Zap, Brain, Database, Network } from "lucide-react";
+import { ArrowRight, Settings, TrendingUp, Layers, Zap, Brain, Database, Network, ExternalLink } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -15,7 +15,11 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       color: "red",
       description: "Expert systems with hand-coded rules",
       label: "Hand-crafted logic. No learning.",
-      examples: ["Chess Programs", "Expert Systems"]
+      examples: ["Chess Programs", "Expert Systems"],
+      articles: [
+        { title: "History of Expert Systems", url: "#" },
+        { title: "ELIZA: Early Chatbot", url: "#" }
+      ]
     },
     {
       era: "Machine Learning",
@@ -24,7 +28,11 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       color: "orange",
       description: "Algorithms that learn from data patterns",
       label: "Learns from data, but needs features.",
-      examples: ["Email Filters", "Recommendation Systems"]
+      examples: ["Email Filters", "Recommendation Systems"],
+      articles: [
+        { title: "Rise of Statistical Learning", url: "#" },
+        { title: "Support Vector Machines Explained", url: "#" }
+      ]
     },
     {
       era: "Deep Learning",
@@ -33,7 +41,11 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       color: "blue",
       description: "Neural networks with multiple layers",
       label: "Learns features from raw data. Revolutionized vision and speech.",
-      examples: ["Image Recognition", "Speech Recognition"]
+      examples: ["Image Recognition", "Speech Recognition"],
+      articles: [
+        { title: "ImageNet Revolution", url: "#" },
+        { title: "Convolutional Neural Networks", url: "#" }
+      ]
     },
     {
       era: "Transformers",
@@ -42,7 +54,11 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       color: "purple",
       description: "Attention mechanisms and large models",
       label: "Understands context. Powers ChatGPT, Copilot, Claude.",
-      examples: ["ChatGPT", "Copilot", "Claude"]
+      examples: ["ChatGPT", "Copilot", "Claude"],
+      articles: [
+        { title: "Attention Is All You Need Paper", url: "#" },
+        { title: "GPT Series Evolution", url: "#" }
+      ]
     }
   ];
 
@@ -57,72 +73,13 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
         <span className="text-blue-400">{slideNumber}.</span> Evolution of AI
       </motion.h1>
 
-      <div className="relative mb-16">
-        {/* Timeline line */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-red-400 via-orange-400 via-blue-400 to-purple-400 origin-left"
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {timeline.map((era, index) => (
-            <motion.div
-              key={era.era}
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="relative"
-            >
-              {/* Timeline dot */}
-              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-4 h-4 bg-${era.color}-400 rounded-full border-2 border-white shadow-lg z-10`} />
-              
-              <div className={`bg-gradient-to-br from-${era.color}-500/20 to-${era.color}-600/10 rounded-2xl border border-${era.color}-400/30 p-6 text-center mt-8`}>
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className={`w-16 h-16 bg-${era.color}-500/20 rounded-full flex items-center justify-center mx-auto mb-4`}
-                >
-                  <era.icon className={`w-8 h-8 text-${era.color}-400`} />
-                </motion.div>
-                
-                <h3 className="text-xl font-bold text-white mb-2">{era.era}</h3>
-                <p className={`text-${era.color}-400 text-sm font-medium mb-3`}>{era.period}</p>
-                <p className="text-white/70 text-sm">{era.description}</p>
-              </div>
-
-              {/* Milestone markers */}
-              <motion.div
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-                className="mt-4 text-center"
-              >
-                <div className={`inline-block px-3 py-1 bg-${era.color}-500/20 rounded-full border border-${era.color}-400/40`}>
-                  <span className={`text-${era.color}-400 text-xs font-medium`}>
-                    {index === 0 && "ELIZA, Expert Systems"}
-                    {index === 1 && "SVM, Random Forest"}
-                    {index === 2 && "CNNs, RNNs"}
-                    {index === 3 && "GPT, BERT, ChatGPT"}
-                  </span>
-                </div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Beautiful Horizontal Timeline Diagram */}
+      {/* Enhanced Timeline */}
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
         className="relative"
       >
-        <h2 className="text-3xl font-bold text-white mb-12 text-center">
-          Interactive Timeline Visualization
-        </h2>
-        
         {/* Gradient Background */}
         <div className="relative bg-gradient-to-r from-slate-900/50 via-purple-900/30 to-slate-800/50 rounded-3xl p-8 overflow-hidden">
           {/* Floating Background Icons */}
@@ -135,13 +92,18 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
 
           {/* Main Timeline */}
           <div className="relative">
-            {/* Animated Timeline Line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 2, delay: 0.5 }}
-              className="absolute top-16 left-0 right-0 h-2 bg-gradient-to-r from-red-500 via-orange-500 via-blue-500 to-purple-500 rounded-full origin-left"
-            />
+            {/* Subtle Connection Lines */}
+            <div className="absolute top-16 left-0 right-0 flex justify-between items-center px-10">
+              {timeline.slice(0, -1).map((_, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  transition={{ duration: 1, delay: 1 + index * 0.3 }}
+                  className="flex-1 h-px bg-gradient-to-r from-white/20 to-white/10 mx-4 origin-left"
+                />
+              ))}
+            </div>
 
             {/* Timeline Milestones */}
             <div className="grid grid-cols-4 gap-6 relative z-10">
@@ -185,7 +147,7 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
                     </div>
                     
                     {/* Examples */}
-                    <div className="space-y-1">
+                    <div className="space-y-1 mb-4">
                       {milestone.examples.map((example, exIndex) => (
                         <motion.div
                           key={example}
@@ -198,6 +160,23 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
                         </motion.div>
                       ))}
                     </div>
+
+                    {/* Embedded Article Links */}
+                    <div className="space-y-2">
+                      {milestone.articles.map((article, articleIndex) => (
+                        <motion.a
+                          key={article.title}
+                          href={article.url}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: 1.5 + index * 0.3 + articleIndex * 0.1 }}
+                          className={`group flex items-center justify-center space-x-2 text-${milestone.color}-400 hover:text-${milestone.color}-300 text-xs bg-${milestone.color}-500/5 hover:bg-${milestone.color}-500/10 px-3 py-2 rounded-lg border border-${milestone.color}-400/20 hover:border-${milestone.color}-400/40 transition-all duration-200`}
+                        >
+                          <span className="truncate">{article.title}</span>
+                          <ExternalLink className="w-3 h-3 group-hover:scale-110 transition-transform" />
+                        </motion.a>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Progress Arrow */}
@@ -205,10 +184,10 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 1.5 + index * 0.2 }}
-                      className="absolute top-16 -right-3 transform -translate-y-1/2"
+                      transition={{ duration: 0.6, delay: 1.8 + index * 0.2 }}
+                      className="absolute top-16 -right-3 transform -translate-y-1/2 hidden lg:block"
                     >
-                      <ArrowRight className="w-6 h-6 text-white/60" />
+                      <ArrowRight className="w-6 h-6 text-white/40" />
                     </motion.div>
                   )}
                 </motion.div>
@@ -219,18 +198,18 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 2 }}
+              transition={{ duration: 0.8, delay: 2.5 }}
               className="mt-12 text-center"
             >
               <div className="inline-flex items-center space-x-4 bg-white/5 rounded-full px-6 py-3 border border-white/10">
-                <span className="text-white/80 text-sm font-medium">Evolution Progress:</span>
+                <span className="text-white/80 text-sm font-medium">Current Evolution Stage:</span>
                 <div className="flex space-x-2">
                   {['Static AI', 'Prompt Chaining', 'Autonomous Agents', 'Multi-Agent Systems'].map((stage, index) => (
                     <motion.div
                       key={stage}
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
-                      transition={{ duration: 0.3, delay: 2.2 + index * 0.1 }}
+                      transition={{ duration: 0.3, delay: 2.7 + index * 0.1 }}
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         index === 0 ? 'bg-red-500/20 text-red-400' :
                         index === 1 ? 'bg-orange-500/20 text-orange-400' :
