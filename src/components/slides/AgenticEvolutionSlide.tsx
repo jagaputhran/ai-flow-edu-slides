@@ -1,12 +1,15 @@
 
 import { motion } from "framer-motion";
-import { Clock, Zap, Bot, Users, Target, Calendar, TrendingUp, Code, Search, DollarSign, ShoppingCart, Play } from "lucide-react";
+import { Clock, Zap, Bot, Users, Target, Calendar, TrendingUp, Code, Search, DollarSign, ShoppingCart, Play, CheckCircle, RefreshCw, Database, MessageCircle, ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 interface SlideProps {
   slideNumber: number;
 }
 
 const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
+  const [activeStep, setActiveStep] = useState(0);
+
   const timelineData = [
     {
       period: "Pre-2022",
@@ -56,6 +59,57 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
     { icon: ShoppingCart, title: "Shopping Assistant", description: "Compares prices, buys products" },
     { icon: Code, title: "Dev Agent", description: "Writes, tests, and debugs code" },
     { icon: TrendingUp, title: "Business Analyst Agent", description: "Analyzes trends, summarizes reports" }
+  ];
+
+  const agentWorkflow = [
+    {
+      id: 'goal',
+      title: 'Goal Setting',
+      icon: Target,
+      color: 'blue',
+      description: 'Human provides goal: "Book a flight to Paris"',
+      details: ['Task decomposition', 'Priority assignment', 'Success criteria']
+    },
+    {
+      id: 'planning',
+      title: 'Planning',
+      icon: CheckCircle,
+      color: 'purple',
+      description: 'AI breaks task into actionable steps',
+      details: ['Search flights', 'Compare prices', 'Check dates', 'Make booking']
+    },
+    {
+      id: 'tools',
+      title: 'Tool Usage',
+      icon: Zap,
+      color: 'orange',
+      description: 'Access external tools and APIs',
+      details: ['Web browser', 'Flight APIs', 'Calendar', 'Payment system']
+    },
+    {
+      id: 'execution',
+      title: 'Execution Loop',
+      icon: RefreshCw,
+      color: 'green',
+      description: 'Take actions, observe results, adjust',
+      details: ['Action execution', 'Result analysis', 'Plan adjustment', 'Error handling']
+    },
+    {
+      id: 'memory',
+      title: 'Memory Systems',
+      icon: Database,
+      color: 'cyan',
+      description: 'Store and recall information',
+      details: ['Short-term context', 'Long-term storage', 'Pattern recognition', 'Learning']
+    },
+    {
+      id: 'feedback',
+      title: 'Feedback Loop',
+      icon: MessageCircle,
+      color: 'yellow',
+      description: 'Self-correction and user feedback',
+      details: ['Performance monitoring', 'User validation', 'Strategy updates', 'Continuous improvement']
+    }
   ];
 
   return (
@@ -171,41 +225,117 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
         </div>
       </motion.div>
 
-      {/* Agentic AI Animation Prompt */}
+      {/* Interactive Agentic AI Workflow */}
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 1.2 }}
         className="bg-gradient-to-br from-green-500/20 to-teal-600/10 rounded-2xl border border-green-400/30 p-8"
       >
-        <div className="text-center mb-6">
+        <div className="text-center mb-8">
           <motion.div
             animate={{ rotate: [0, 360] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            className="inline-block w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mb-4"
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            className="inline-block w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4"
           >
-            <Play className="w-6 h-6 text-green-400" />
+            <Bot className="w-8 h-8 text-green-400" />
           </motion.div>
-          <h2 className="text-2xl font-bold text-white mb-4">Agentic AI Animation Prompt</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Interactive Agentic AI Workflow</h2>
+          <p className="text-white/70">Click on each step to explore how AI agents work</p>
         </div>
-        
-        <div className="bg-slate-800/50 rounded-lg p-6 border border-green-400/20">
-          <p className="text-green-400 font-medium mb-4">Visual Diagram Creation Prompt:</p>
-          <div className="text-white/80 text-sm leading-relaxed space-y-4">
-            <p>"Create an animated diagram showing how Agentic AI works. Begin with a robot or AI agent icon receiving a goal from a human (e.g., 'Book a flight to Paris'). Then show the following animated flow:</p>
-            
-            <div className="pl-4 space-y-2">
-              <p>• <span className="text-blue-400">Goal → Planning:</span> AI breaks task into steps (animated checklist)</p>
-              <p>• <span className="text-purple-400">Tool Usage:</span> Show icons like web browser, calculator, Python script, API plug, etc.</p>
-              <p>• <span className="text-orange-400">Execution Loop:</span> Animate agent taking actions, observing results, adjusting plan</p>
-              <p>• <span className="text-cyan-400">Memory:</span> Visualize short-term memory (chat bubble) and long-term memory (database icon)</p>
-              <p>• <span className="text-yellow-400">Feedback Loop:</span> Circular arrows showing self-correction or user feedback</p>
-              <p>• <span className="text-green-400">Success:</span> Agent returns with a booked flight or completed task</p>
-            </div>
-            
-            <p>Include smooth transitions, clear icons, labels, and color-coded modules. Style should be clean, modern, and slightly playful. Add a timeline at the bottom showing evolution from Static AI → Prompt Chaining → Autonomous Agents → Multi-Agent Systems."</p>
+
+        {/* Workflow Steps */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {agentWorkflow.map((step, index) => (
+            <motion.div
+              key={step.id}
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              onClick={() => setActiveStep(index)}
+              className={`cursor-pointer rounded-xl p-6 border transition-all duration-300 ${
+                activeStep === index
+                  ? `bg-gradient-to-br from-${step.color}-500/30 to-${step.color}-600/20 border-${step.color}-400`
+                  : `bg-gradient-to-br from-${step.color}-500/10 to-${step.color}-600/5 border-${step.color}-400/30 hover:border-${step.color}-400/50`
+              }`}
+            >
+              <motion.div
+                animate={activeStep === index ? { rotate: [0, 10, -10, 0] } : {}}
+                transition={{ duration: 0.5 }}
+                className={`w-12 h-12 bg-${step.color}-500/20 rounded-full flex items-center justify-center mb-4`}
+              >
+                <step.icon className={`w-6 h-6 text-${step.color}-400`} />
+              </motion.div>
+              
+              <h3 className="text-white font-bold mb-2">{step.title}</h3>
+              <p className="text-white/70 text-sm mb-3">{step.description}</p>
+              
+              {activeStep === index && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="space-y-2 mt-4"
+                >
+                  {step.details.map((detail, i) => (
+                    <motion.div
+                      key={detail}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.1 }}
+                      className="text-xs bg-white/5 rounded px-2 py-1 text-white/80"
+                    >
+                      • {detail}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* Step number indicator */}
+              <div className={`absolute top-2 right-2 w-6 h-6 bg-${step.color}-500/30 rounded-full flex items-center justify-center`}>
+                <span className={`text-${step.color}-400 text-xs font-bold`}>{index + 1}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Flow Arrows */}
+        <div className="flex justify-center items-center mb-8">
+          <div className="flex items-center space-x-4">
+            {['Goal', 'Plan', 'Execute', 'Learn', 'Repeat'].map((step, index) => (
+              <div key={step} className="flex items-center">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.4 }}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-full border border-blue-400/30"
+                >
+                  <span className="text-blue-400 text-sm font-medium">{step}</span>
+                </motion.div>
+                {index < 4 && (
+                  <motion.div
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }}
+                  >
+                    <ArrowRight className="w-4 h-4 text-white/40 mx-2" />
+                  </motion.div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Success indicator */}
+        <motion.div
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 0.8, delay: 2 }}
+          className="text-center"
+        >
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-green-500/20 border border-green-400/30 rounded-full">
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <span className="text-green-400 font-medium">Agent successfully books flight to Paris!</span>
+          </div>
+        </motion.div>
       </motion.div>
     </div>
   );

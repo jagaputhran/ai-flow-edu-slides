@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
@@ -18,6 +17,8 @@ import AgenticEvolutionSlide from "@/components/slides/AgenticEvolutionSlide";
 import UseCasesSlide from "@/components/slides/UseCasesSlide";
 import RisksEthicsSlide from "@/components/slides/RisksEthicsSlide";
 import FutureSlide from "@/components/slides/FutureSlide";
+import DataRolesSlide from "@/components/slides/DataRolesSlide";
+import LLMCalculatorSlide from "@/components/slides/LLMCalculatorSlide";
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -27,11 +28,13 @@ const Index = () => {
     { component: IntroSlide, title: "Introduction" },
     { component: WhyAISlide, title: "Why AI Matters Now" },
     { component: WhatIsAISlide, title: "What is AI?" },
+    { component: DataRolesSlide, title: "Data Roles Comparison" },
     { component: EvolutionSlide, title: "Evolution of AI" },
     { component: MLvsDLSlide, title: "ML vs DL" },
     { component: NeuralNetworksSlide, title: "Neural Networks" },
     { component: TransformerArchitectureSlide, title: "Transformer Architecture" },
     { component: GenerativeAISlide, title: "Generative AI" },
+    { component: LLMCalculatorSlide, title: "LLM RAM Calculator" },
     { component: RAGSlide, title: "RAG Systems" },
     { component: AgenticAISlide, title: "Agentic AI" },
     { component: AgenticEvolutionSlide, title: "Evolution of Agentic AI" },
