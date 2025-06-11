@@ -254,7 +254,7 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
               transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
               whileHover={{ scale: 1.05, y: -5 }}
               onClick={() => setActiveStep(index)}
-              className={`cursor-pointer rounded-xl p-6 border transition-all duration-300 ${
+              className={`cursor-pointer rounded-xl p-6 border transition-all duration-300 relative ${
                 activeStep === index
                   ? `bg-gradient-to-br from-${step.color}-500/30 to-${step.color}-600/20 border-${step.color}-400`
                   : `bg-gradient-to-br from-${step.color}-500/10 to-${step.color}-600/5 border-${step.color}-400/30 hover:border-${step.color}-400/50`
