@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { ArrowRight, Settings, TrendingUp, Layers, Zap, Brain, Database, Network, ExternalLink } from "lucide-react";
 
@@ -17,8 +16,8 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       label: "Hand-crafted logic. No learning.",
       examples: ["Chess Programs", "Expert Systems"],
       articles: [
-        { title: "History of Expert Systems", url: "#" },
-        { title: "ELIZA: Early Chatbot", url: "#" }
+        { title: "History of Expert Systems", url: "https://en.wikipedia.org/wiki/Expert_system" },
+        { title: "ELIZA: Early Chatbot", url: "https://en.wikipedia.org/wiki/ELIZA" }
       ]
     },
     {
@@ -30,8 +29,8 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       label: "Learns from data, but needs features.",
       examples: ["Email Filters", "Recommendation Systems"],
       articles: [
-        { title: "Rise of Statistical Learning", url: "#" },
-        { title: "Support Vector Machines Explained", url: "#" }
+        { title: "Rise of Statistical Learning", url: "https://en.wikipedia.org/wiki/Statistical_learning_theory" },
+        { title: "Support Vector Machines", url: "https://en.wikipedia.org/wiki/Support_vector_machine" }
       ]
     },
     {
@@ -43,8 +42,8 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       label: "Learns features from raw data. Revolutionized vision and speech.",
       examples: ["Image Recognition", "Speech Recognition"],
       articles: [
-        { title: "ImageNet Revolution", url: "#" },
-        { title: "Convolutional Neural Networks", url: "#" }
+        { title: "ImageNet Revolution", url: "https://en.wikipedia.org/wiki/ImageNet" },
+        { title: "Convolutional Neural Networks", url: "https://en.wikipedia.org/wiki/Convolutional_neural_network" }
       ]
     },
     {
@@ -56,8 +55,8 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
       label: "Understands context. Powers ChatGPT, Copilot, Claude.",
       examples: ["ChatGPT", "Copilot", "Claude"],
       articles: [
-        { title: "Attention Is All You Need Paper", url: "#" },
-        { title: "GPT Series Evolution", url: "#" }
+        { title: "Attention Is All You Need", url: "https://arxiv.org/abs/1706.03762" },
+        { title: "GPT Series Evolution", url: "https://en.wikipedia.org/wiki/GPT-3" }
       ]
     }
   ];
@@ -167,6 +166,8 @@ const EvolutionSlide = ({ slideNumber }: SlideProps) => {
                         <motion.a
                           key={article.title}
                           href={article.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           initial={{ opacity: 0, y: 10 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: 1.5 + index * 0.3 + articleIndex * 0.1 }}

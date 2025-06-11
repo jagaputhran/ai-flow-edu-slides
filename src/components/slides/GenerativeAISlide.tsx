@@ -1,6 +1,5 @@
-
 import { motion } from "framer-motion";
-import { MessageSquare, Image, Code, Music, ArrowRight, ExternalLink, Layers, Zap } from "lucide-react";
+import { MessageSquare, Image, Code, Music, ArrowRight, ExternalLink, Layers, Zap, Globe } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -70,6 +69,23 @@ const GenerativeAISlide = ({ slideNumber }: SlideProps) => {
       description: "Softmax → Next Token",
       color: "orange",
       details: ["Linear Projection", "Vocabulary Softmax", "Sampling Strategies"]
+    }
+  ];
+
+  const exploreLinks = [
+    {
+      title: "LLM Visualization",
+      description: "Interactive 3D visualization of language models",
+      url: "https://bbycroft.net/llm",
+      icon: Globe,
+      color: "blue"
+    },
+    {
+      title: "Transformer Explainer",
+      description: "Interactive explanation of transformer architecture",
+      url: "https://poloclub.github.io/transformer-explainer/",
+      icon: Layers,
+      color: "purple"
     }
   ];
 
@@ -185,7 +201,7 @@ const GenerativeAISlide = ({ slideNumber }: SlideProps) => {
                     className="text-xs text-white/60 bg-white/5 rounded px-2 py-1"
                   >
                     {detail}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
@@ -264,6 +280,52 @@ const GenerativeAISlide = ({ slideNumber }: SlideProps) => {
         >
           LLMs use autoregressive generation: each token is predicted based on all previous tokens in the sequence
         </motion.p>
+      </motion.div>
+
+      {/* Interactive Exploration Links */}
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+        className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 rounded-2xl border border-slate-600/30 p-8"
+      >
+        <h3 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center gap-3">
+          <Zap className="w-6 h-6 text-purple-400" />
+          Explore Interactive LLM Visualizations
+        </h3>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          {exploreLinks.map((link, index) => (
+            <motion.a
+              key={link.title}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              className={`group bg-gradient-to-br from-${link.color}-500/20 to-${link.color}-600/10 rounded-xl border border-${link.color}-400/30 p-6 flex items-center space-x-4 hover:border-${link.color}-400/50 transition-all duration-300`}
+            >
+              <motion.div
+                whileHover={{ rotate: 10 }}
+                className={`w-12 h-12 bg-${link.color}-500/20 rounded-full flex items-center justify-center flex-shrink-0`}
+              >
+                <link.icon className={`w-6 h-6 text-${link.color}-400`} />
+              </motion.div>
+              
+              <div className="flex-1">
+                <h4 className="text-white font-bold mb-1">{link.title}</h4>
+                <p className="text-white/70 text-sm mb-2">{link.description}</p>
+                <span className={`text-${link.color}-400 text-xs font-medium group-hover:text-white transition-colors`}>
+                  Explore Interactive Demo →
+                </span>
+              </div>
+              
+              <ExternalLink className={`w-5 h-5 text-${link.color}-400 group-hover:text-white transition-colors`} />
+            </motion.a>
+          ))}
+        </div>
       </motion.div>
     </div>
   );
