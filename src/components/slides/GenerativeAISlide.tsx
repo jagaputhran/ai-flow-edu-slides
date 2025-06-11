@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { MessageSquare, Image, Code, Music, ArrowRight, ExternalLink, Layers, Zap, Globe } from "lucide-react";
 
@@ -201,7 +202,7 @@ const GenerativeAISlide = ({ slideNumber }: SlideProps) => {
                     className="text-xs text-white/60 bg-white/5 rounded px-2 py-1"
                   >
                     {detail}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
