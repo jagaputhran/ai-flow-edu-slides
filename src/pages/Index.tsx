@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
@@ -16,6 +17,7 @@ import AgenticAISlide from "@/components/slides/AgenticAISlide";
 import AgenticEvolutionSlide from "@/components/slides/AgenticEvolutionSlide";
 import UseCasesSlide from "@/components/slides/UseCasesSlide";
 import RisksEthicsSlide from "@/components/slides/RisksEthicsSlide";
+import LLMSecuritySlide from "@/components/slides/LLMSecuritySlide";
 import FutureSlide from "@/components/slides/FutureSlide";
 import DataRolesSlide from "@/components/slides/DataRolesSlide";
 import LLMCalculatorSlide from "@/components/slides/LLMCalculatorSlide";
@@ -40,6 +42,7 @@ const Index = () => {
     { component: AgenticEvolutionSlide, title: "Evolution of Agentic AI" },
     { component: UseCasesSlide, title: "Use Cases" },
     { component: RisksEthicsSlide, title: "Risks & Ethics" },
+    { component: LLMSecuritySlide, title: "LLM Security" },
     { component: FutureSlide, title: "Future of AI" },
   ];
 
