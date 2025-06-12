@@ -12,6 +12,7 @@ import NeuralNetworksSlide from "@/components/slides/NeuralNetworksSlide";
 import TransformerArchitectureSlide from "@/components/slides/TransformerArchitectureSlide";
 import GenerativeAISlide from "@/components/slides/GenerativeAISlide";
 import RAGSlide from "@/components/slides/RAGSlide";
+import RAGQuestSlide from "@/components/slides/RAGQuestSlide";
 import AgenticAISlide from "@/components/slides/AgenticAISlide";
 import AgenticEvolutionSlide from "@/components/slides/AgenticEvolutionSlide";
 import UseCasesSlide from "@/components/slides/UseCasesSlide";
@@ -38,6 +39,7 @@ const Index = () => {
     { component: GenerativeAISlide, title: "Generative AI" },
     { component: LLMCalculatorSlide, title: "LLM RAM Calculator" },
     { component: RAGSlide, title: "RAG Systems" },
+    { component: RAGQuestSlide, title: "RAG Quest" },
     { component: AgenticAISlide, title: "Agentic AI" },
     { component: AgenticEvolutionSlide, title: "Evolution of Agentic AI" },
     { component: UseCasesSlide, title: "Use Cases" },
