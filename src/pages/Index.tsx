@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
@@ -21,6 +20,7 @@ import LLMSecuritySlide from "@/components/slides/LLMSecuritySlide";
 import FutureSlide from "@/components/slides/FutureSlide";
 import DataRolesSlide from "@/components/slides/DataRolesSlide";
 import LLMCalculatorSlide from "@/components/slides/LLMCalculatorSlide";
+import LLMInjectionSimulatorSlide from "@/components/slides/LLMInjectionSimulatorSlide";
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -43,6 +43,7 @@ const Index = () => {
     { component: UseCasesSlide, title: "Use Cases" },
     { component: RisksEthicsSlide, title: "Risks & Ethics" },
     { component: LLMSecuritySlide, title: "LLM Security" },
+    { component: LLMInjectionSimulatorSlide, title: "LLM Injection Simulator" },
     { component: FutureSlide, title: "Future of AI" },
   ];
 

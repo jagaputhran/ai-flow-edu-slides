@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Shield, AlertTriangle, Code, GitBranch, Eye, Target, ExternalLink, Lock } from "lucide-react";
 
@@ -272,7 +271,7 @@ const LLMSecuritySlide = ({ slideNumber }: SlideProps) => {
           ⚠️ Always audit AI-generated code, validate dependencies, and avoid cloning unknown repositories.
         </p>
         <motion.a
-          href="https://gitprotect.io/blog/how-attackers-use-ai-to-spread-malware-on-github/"
+          href="https://gitprotect.io/"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}
