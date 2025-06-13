@@ -22,6 +22,7 @@ import FutureSlide from "@/components/slides/FutureSlide";
 import DataRolesSlide from "@/components/slides/DataRolesSlide";
 import LLMCalculatorSlide from "@/components/slides/LLMCalculatorSlide";
 import LLMInjectionSimulatorSlide from "@/components/slides/LLMInjectionSimulatorSlide";
+import DataDungeonSlide from "@/components/slides/DataDungeonSlide";
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,6 +47,7 @@ const Index = () => {
     { component: RisksEthicsSlide, title: "Risks & Ethics" },
     { component: LLMSecuritySlide, title: "LLM Security" },
     { component: LLMInjectionSimulatorSlide, title: "LLM Injection Simulator" },
+    { component: DataDungeonSlide, title: "Data Dungeon Game" },
     { component: FutureSlide, title: "Future of AI" },
   ];
 
