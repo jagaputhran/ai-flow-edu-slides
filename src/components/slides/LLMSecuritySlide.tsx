@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Shield, AlertTriangle, Code, GitBranch, Eye, Target, ExternalLink, Lock } from "lucide-react";
 
