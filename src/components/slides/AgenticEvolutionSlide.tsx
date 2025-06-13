@@ -132,6 +132,67 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
     { icon: ShoppingCart, title: "E-commerce Agent", description: "Product research and purchasing", impact: "Medium" }
   ];
 
+  const getColorClasses = (color: string) => {
+    switch(color) {
+      case 'red':
+        return {
+          bg: 'bg-gradient-to-br from-red-500/20 to-red-600/10',
+          border: 'border-red-400/30',
+          text: 'text-red-400',
+          bgColor: 'bg-red-400',
+          ring: 'ring-red-400'
+        };
+      case 'orange':
+        return {
+          bg: 'bg-gradient-to-br from-orange-500/20 to-orange-600/10',
+          border: 'border-orange-400/30',
+          text: 'text-orange-400',
+          bgColor: 'bg-orange-400',
+          ring: 'ring-orange-400'
+        };
+      case 'blue':
+        return {
+          bg: 'bg-gradient-to-br from-blue-500/20 to-blue-600/10',
+          border: 'border-blue-400/30',
+          text: 'text-blue-400',
+          bgColor: 'bg-blue-400',
+          ring: 'ring-blue-400'
+        };
+      case 'green':
+        return {
+          bg: 'bg-gradient-to-br from-green-500/20 to-green-600/10',
+          border: 'border-green-400/30',
+          text: 'text-green-400',
+          bgColor: 'bg-green-400',
+          ring: 'ring-green-400'
+        };
+      case 'purple':
+        return {
+          bg: 'bg-gradient-to-br from-purple-500/20 to-purple-600/10',
+          border: 'border-purple-400/30',
+          text: 'text-purple-400',
+          bgColor: 'bg-purple-400',
+          ring: 'ring-purple-400'
+        };
+      case 'gray':
+        return {
+          bg: 'bg-gradient-to-br from-gray-500/20 to-gray-600/10',
+          border: 'border-gray-400/30',
+          text: 'text-gray-400',
+          bgColor: 'bg-gray-400',
+          ring: 'ring-gray-400'
+        };
+      default:
+        return {
+          bg: 'bg-gradient-to-br from-blue-500/20 to-blue-600/10',
+          border: 'border-blue-400/30',
+          text: 'text-blue-400',
+          bgColor: 'bg-blue-400',
+          ring: 'ring-blue-400'
+        };
+    }
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto px-6">
       <motion.h1
@@ -156,59 +217,62 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-red-400 via-blue-400 to-purple-400" />
           
           <div className="space-y-12">
-            {timelineData.map((item, index) => (
-              <motion.div
-                key={item.period}
-                initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
-              >
-                <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}>
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    onClick={() => setActiveTimeline(index)}
-                    className={`cursor-pointer bg-gradient-to-br from-${item.color}-500/20 to-${item.color}-600/10 rounded-lg border border-${item.color}-400/30 p-6 transition-all duration-300 ${
-                      activeTimeline === index ? `ring-2 ring-${item.color}-400` : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <item.icon className={`w-6 h-6 text-${item.color}-400`} />
-                      <div className={`text-${item.color}-400 font-bold text-lg`}>{item.period}</div>
-                    </div>
-                    <h3 className="text-white font-semibold text-xl mb-3">{item.title}</h3>
-                    <div className="space-y-2">
-                      {item.features.map((feature, i) => (
-                        <div key={i} className="text-white/70 text-sm">• {feature}</div>
-                      ))}
-                    </div>
-                    
-                    {activeTimeline === index && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="mt-4 pt-4 border-t border-white/20"
-                      >
-                        <h4 className="text-white font-medium mb-2">Examples:</h4>
-                        {item.examples.map((example, i) => (
-                          <div key={i} className={`text-${item.color}-400 text-sm`}>→ {example}</div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </motion.div>
-                </div>
-                
+            {timelineData.map((item, index) => {
+              const colorClasses = getColorClasses(item.color);
+              return (
                 <motion.div
-                  animate={{ scale: activeTimeline === index ? [1, 1.3, 1] : [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                  className={`w-8 h-8 bg-${item.color}-400 rounded-full border-4 border-slate-900 z-10 flex items-center justify-center`}
+                  key={`timeline-${item.period}-${index}`}
+                  initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                  className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
                 >
-                  <item.icon className="w-4 h-4 text-white" />
+                  <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      onClick={() => setActiveTimeline(index)}
+                      className={`cursor-pointer ${colorClasses.bg} rounded-lg border ${colorClasses.border} p-6 transition-all duration-300 ${
+                        activeTimeline === index ? `ring-2 ${colorClasses.ring}` : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <item.icon className={`w-6 h-6 ${colorClasses.text}`} />
+                        <div className={`${colorClasses.text} font-bold text-lg`}>{item.period}</div>
+                      </div>
+                      <h3 className="text-white font-semibold text-xl mb-3">{item.title}</h3>
+                      <div className="space-y-2">
+                        {item.features.map((feature, i) => (
+                          <div key={`feature-${index}-${i}`} className="text-white/70 text-sm">• {feature}</div>
+                        ))}
+                      </div>
+                      
+                      {activeTimeline === index && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          className="mt-4 pt-4 border-t border-white/20"
+                        >
+                          <h4 className="text-white font-medium mb-2">Examples:</h4>
+                          {item.examples.map((example, i) => (
+                            <div key={`example-${index}-${i}`} className={`${colorClasses.text} text-sm`}>→ {example}</div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  </div>
+                  
+                  <motion.div
+                    animate={{ scale: activeTimeline === index ? [1, 1.3, 1] : [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+                    className={`w-8 h-8 ${colorClasses.bgColor} rounded-full border-4 border-slate-900 z-10 flex items-center justify-center`}
+                  >
+                    <item.icon className="w-4 h-4 text-white" />
+                  </motion.div>
+                  
+                  <div className="w-5/12" />
                 </motion.div>
-                
-                <div className="w-5/12" />
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </motion.div>
@@ -222,28 +286,31 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
       >
         <h2 className="text-2xl font-bold text-white mb-6 text-center">Architecture Evolution</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          {architectureComparison.map((arch, index) => (
-            <motion.div
-              key={arch.type}
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-              className={`bg-gradient-to-br from-${arch.color}-500/20 to-${arch.color}-600/10 rounded-lg border border-${arch.color}-400/30 p-6`}
-            >
-              <h3 className={`text-${arch.color}-400 font-semibold text-lg mb-2`}>{arch.type}</h3>
-              <p className="text-white/70 text-sm mb-4">{arch.description}</p>
-              <div className="space-y-2">
-                {arch.flow.map((step, i) => (
-                  <div key={step} className="flex items-center gap-2">
-                    <div className={`w-2 h-2 bg-${arch.color}-400 rounded-full`} />
-                    <span className="text-white/80 text-sm">{step}</span>
-                    {i < arch.flow.length - 1 && <ArrowRight className="w-3 h-3 text-white/40" />}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+          {architectureComparison.map((arch, index) => {
+            const colorClasses = getColorClasses(arch.color);
+            return (
+              <motion.div
+                key={`arch-${arch.type}-${index}`}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                className={`${colorClasses.bg} rounded-lg border ${colorClasses.border} p-6`}
+              >
+                <h3 className={`${colorClasses.text} font-semibold text-lg mb-2`}>{arch.type}</h3>
+                <p className="text-white/70 text-sm mb-4">{arch.description}</p>
+                <div className="space-y-2">
+                  {arch.flow.map((step, i) => (
+                    <div key={`flow-${index}-${i}`} className="flex items-center gap-2">
+                      <div className={`w-2 h-2 ${colorClasses.bgColor} rounded-full`} />
+                      <span className="text-white/80 text-sm">{step}</span>
+                      {i < arch.flow.length - 1 && <ArrowRight className="w-3 h-3 text-white/40" />}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -258,7 +325,7 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {capabilities.map((capability, index) => (
             <motion.div
-              key={capability.title}
+              key={`capability-${capability.title}-${index}`}
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 1 + index * 0.1 }}
@@ -295,7 +362,7 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {frameworks.map((framework, index) => (
             <motion.div
-              key={framework.name}
+              key={`framework-${framework.name}-${index}`}
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
@@ -330,7 +397,7 @@ const AgenticEvolutionSlide = ({ slideNumber }: SlideProps) => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {useCases.map((useCase, index) => (
             <motion.div
-              key={useCase.title}
+              key={`usecase-${useCase.title}-${index}`}
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 1.4 + index * 0.1 }}
