@@ -32,7 +32,7 @@ interface SlideProps {
 }
 
 const DataDungeonSlide = ({ slideNumber }: SlideProps) => {
-  const [selectedTool, setSelectedTool] = useState("");
+  const [selectedTool, setSelectedTool] = useState<string>("");
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
   const [gameActive, setGameActive] = useState(false);
@@ -137,7 +137,6 @@ Mouse, 25, 100, 2023-01-04`,
     setShowResult(false);
     setUsedTools([]);
     
-    // Generate AI tip based on dataset issues
     const dataset = datasets[randomIndex];
     const relevantTips = aiTips.filter(tip => 
       dataset.issues.some(issue => tip.toLowerCase().includes(issue))
@@ -160,7 +159,6 @@ Mouse, 25, 100, 2023-01-04`,
     
     if (!tool || !dataset) return;
 
-    // Calculate effectiveness
     let damage = 0;
     dataset.issues.forEach(issue => {
       damage += tool.effectiveness[issue as keyof typeof tool.effectiveness] || 0;
@@ -175,7 +173,7 @@ Mouse, 25, 100, 2023-01-04`,
     setShowResult(true);
 
     if (newHealth === 0) {
-      setScore(prev => prev + 100); // Bonus for defeating monster
+      setScore(prev => prev + 100);
       setTimeout(generateRandomDataset, 2000);
     }
   };
@@ -243,7 +241,6 @@ John, 34, 60000, 2023-03-05
         </TabsList>
 
         <TabsContent value="battle" className="space-y-6">
-          {/* Game Controls */}
           <Card className="bg-gradient-to-br from-purple-500/20 to-blue-600/10 border-purple-400/30">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
@@ -294,10 +291,8 @@ John, 34, 60000, 2023-03-05
             </CardContent>
           </Card>
 
-          {/* Current Battle */}
           {datasets[currentDataset] && (
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Dataset & Monster */}
               <Card className="bg-gradient-to-br from-red-500/20 to-orange-600/10 border-red-400/30">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
@@ -325,7 +320,6 @@ John, 34, 60000, 2023-03-05
                 </CardContent>
               </Card>
 
-              {/* AI Weapons */}
               <Card className="bg-gradient-to-br from-blue-500/20 to-cyan-600/10 border-blue-400/30">
                 <CardHeader>
                   <CardTitle className="text-white">Choose Your AI Weapon</CardTitle>
@@ -343,7 +337,7 @@ John, 34, 60000, 2023-03-05
                     <SelectTrigger className="bg-black/30 border-blue-400/50 text-white">
                       <SelectValue placeholder="Select an AI tool..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-blue-400/50">
+                    <SelectContent className="bg-gray-800 border-blue-400/50">
                       {tools.map((tool) => (
                         <SelectItem key={tool.id} value={tool.id} className="text-white hover:bg-blue-500/20">
                           <div className="flex flex-col">
@@ -368,7 +362,7 @@ John, 34, 60000, 2023-03-05
                     <div className="space-y-2">
                       <h4 className="text-white font-medium">🔁 Tools Used:</h4>
                       {usedTools.map((tool, index) => (
-                        <Badge key={index} variant="outline" className="mr-2 text-green-400 border-green-400/50">
+                        <Badge key={`tool-${index}`} variant="outline" className="mr-2 text-green-400 border-green-400/50">
                           {tool}
                         </Badge>
                       ))}
@@ -379,7 +373,6 @@ John, 34, 60000, 2023-03-05
             </div>
           )}
 
-          {/* Battle Result */}
           {showResult && (
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
