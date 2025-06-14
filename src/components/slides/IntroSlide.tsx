@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, Code, ExternalLink, Cpu, Network, Bot, Brain } from "lucide-react";
 
@@ -152,21 +151,7 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         transition={{ duration: 0.8, delay: 0.7 }}
         className="text-lg text-white/70 mb-12 max-w-2xl mx-auto"
       >
-        From foundational concepts to cutting-edge applications with{" "}
-        <motion.span
-          animate={{ 
-            background: [
-              "linear-gradient(45deg, #3b82f6, #8b5cf6)",
-              "linear-gradient(45deg, #8b5cf6, #10b981)",
-              "linear-gradient(45deg, #10b981, #3b82f6)"
-            ]
-          }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent font-bold"
-        >
-          JAGA
-        </motion.span>{" "}
-        interactive learning.
+        From foundational concepts to cutting-edge applications with interactive learning.
       </motion.p>
 
       {/* Enhanced feature highlights - Fixed layout */}
