@@ -33,27 +33,58 @@ const MLvsDLSlide = ({ slideNumber }: SlideProps) => {
             <h2 className="text-2xl font-bold text-white">Machine Learning</h2>
           </div>
 
-          {/* Decision Tree Visualization */}
+          {/* Enhanced ML Pipeline Visualization */}
           <div className="mb-6">
-            <div className="bg-blue-500/10 rounded-lg p-4 border border-blue-400/20">
+            <div className="bg-blue-500/10 rounded-lg p-6 border border-blue-400/20">
               <div className="text-center mb-4">
-                <div className="inline-block px-3 py-1 bg-blue-400 rounded text-white text-sm">Root</div>
-              </div>
-              <div className="flex justify-center gap-8 mb-4">
-                <div className="text-center">
-                  <div className="inline-block px-2 py-1 bg-blue-300 rounded text-white text-xs">Feature A</div>
-                  <div className="w-px h-4 bg-blue-300 mx-auto mt-1"></div>
-                </div>
-                <div className="text-center">
-                  <div className="inline-block px-2 py-1 bg-blue-300 rounded text-white text-xs">Feature B</div>
-                  <div className="w-px h-4 bg-blue-300 mx-auto mt-1"></div>
+                <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 rounded-lg text-white text-sm font-medium">
+                  Raw Data
                 </div>
               </div>
-              <div className="flex justify-center gap-4">
-                <div className="px-2 py-1 bg-green-400 rounded text-white text-xs">Leaf 1</div>
-                <div className="px-2 py-1 bg-green-400 rounded text-white text-xs">Leaf 2</div>
-                <div className="px-2 py-1 bg-green-400 rounded text-white text-xs">Leaf 3</div>
-                <div className="px-2 py-1 bg-green-400 rounded text-white text-xs">Leaf 4</div>
+              
+              {/* Feature Engineering Step */}
+              <div className="flex justify-center mb-4">
+                <div className="w-px h-6 bg-blue-300"></div>
+              </div>
+              <div className="text-center mb-4">
+                <div className="inline-block px-3 py-1 bg-blue-300/80 rounded text-white text-xs">
+                  Feature Engineering
+                </div>
+              </div>
+              
+              {/* Features Row */}
+              <div className="flex justify-center gap-2 mb-4">
+                <div className="px-2 py-1 bg-blue-200/80 rounded text-blue-900 text-xs">Age</div>
+                <div className="px-2 py-1 bg-blue-200/80 rounded text-blue-900 text-xs">Income</div>
+                <div className="px-2 py-1 bg-blue-200/80 rounded text-blue-900 text-xs">Location</div>
+                <div className="px-2 py-1 bg-blue-200/80 rounded text-blue-900 text-xs">Education</div>
+              </div>
+              
+              {/* Algorithm Selection */}
+              <div className="flex justify-center mb-4">
+                <div className="w-px h-6 bg-blue-300"></div>
+              </div>
+              <div className="text-center mb-4">
+                <div className="inline-block px-3 py-1 bg-gradient-to-r from-blue-400 to-blue-500 rounded text-white text-xs">
+                  Algorithm Selection
+                </div>
+              </div>
+              
+              {/* Algorithm Options */}
+              <div className="flex justify-center gap-2 mb-4">
+                <div className="px-2 py-1 bg-blue-300/60 rounded text-white text-xs">SVM</div>
+                <div className="px-2 py-1 bg-blue-300/80 rounded text-white text-xs font-medium">Random Forest</div>
+                <div className="px-2 py-1 bg-blue-300/60 rounded text-white text-xs">Logistic Reg.</div>
+              </div>
+              
+              {/* Final Prediction */}
+              <div className="flex justify-center mb-2">
+                <div className="w-px h-6 bg-blue-300"></div>
+              </div>
+              <div className="text-center">
+                <div className="inline-block px-4 py-2 bg-gradient-to-r from-green-400 to-green-500 rounded-lg text-white text-sm font-medium">
+                  Prediction
+                </div>
               </div>
             </div>
           </div>
