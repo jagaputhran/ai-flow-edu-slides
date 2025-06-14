@@ -38,7 +38,7 @@ const Chatbot = () => {
 
   // Initialize speech recognition
   useEffect(() => {
-    if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    if (typeof window !== 'undefined' && (window.webkitSpeechRecognition || window.SpeechRecognition)) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognitionInstance = new SpeechRecognition();
       
