@@ -175,10 +175,13 @@ const LLMCalculatorSlide = ({ slideNumber }: SlideProps) => {
                 <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                   <span className="text-blue-400 text-sm">🧠</span>
                 </div>
-                <span className="text-white/80 font-medium">Raw RAM Requirement</span>
+                <span className="text-white/80 font-medium">Minimum RAM Required</span>
               </div>
               <div className="text-3xl font-bold text-blue-400">
                 {results.rawRAM.toFixed(2)} GB
+              </div>
+              <div className="text-white/60 text-sm mt-2">
+                Just for model weights ({precision} precision)
               </div>
             </motion.div>
 
