@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import Chatbot from "@/components/Chatbot";
 import IntroSlide from "@/components/slides/IntroSlide";
 import WhyAISlide from "@/components/slides/WhyAISlide";
 import WhatIsAISlide from "@/components/slides/WhatIsAISlide";
@@ -156,6 +157,9 @@ const Index = () => {
           );
         })}
       </div>
+
+      {/* AI Chatbot */}
+      <Chatbot />
     </div>
   );
 };
