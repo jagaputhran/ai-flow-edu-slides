@@ -1,6 +1,5 @@
-
 import { motion } from "framer-motion";
-import { Clock, TrendingUp, Globe, Zap, Brain, Users, Building2, ExternalLink } from "lucide-react";
+import { Clock, TrendingUp, Globe, Zap, Brain, Users, Building2, ExternalLink, Database, Cpu, Network } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -40,7 +39,7 @@ const WhyAISlide = ({ slideNumber }: SlideProps) => {
       </motion.h1>
 
       <div className="grid lg:grid-cols-3 gap-8 items-start">
-        {/* Animated Visualization */}
+        {/* Animated Visualization with Orbiting Elements */}
         <motion.div
           initial={{ x: -50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
@@ -91,6 +90,86 @@ const WhyAISlide = ({ slideNumber }: SlideProps) => {
                 }}
               />
             ))}
+
+            {/* Orbiting AI Icons */}
+            <motion.div
+              className="absolute w-full h-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.div
+                className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-400 to-blue-500 p-2 rounded-full"
+                whileHover={{ scale: 1.2 }}
+              >
+                <Database className="w-4 h-4 text-white" />
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="absolute w-full h-full"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.div
+                className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-gradient-to-r from-purple-400 to-pink-500 p-2 rounded-full"
+                whileHover={{ scale: 1.2 }}
+              >
+                <Cpu className="w-4 h-4 text-white" />
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="absolute w-full h-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.div
+                className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-orange-400 to-red-500 p-2 rounded-full"
+                whileHover={{ scale: 1.2 }}
+              >
+                <Network className="w-4 h-4 text-white" />
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="absolute w-full h-full"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.div
+                className="absolute top-1/2 -left-4 transform -translate-y-1/2 bg-gradient-to-r from-teal-400 to-cyan-500 p-2 rounded-full"
+                whileHover={{ scale: 1.2 }}
+              >
+                <Zap className="w-4 h-4 text-white" />
+              </motion.div>
+            </motion.div>
+
+            {/* Additional orbiting elements at different distances */}
+            <motion.div
+              className="absolute w-full h-full scale-125"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.div
+                className="absolute top-8 right-8 bg-gradient-to-r from-indigo-400 to-blue-600 p-1.5 rounded-full"
+                whileHover={{ scale: 1.3 }}
+              >
+                <Globe className="w-3 h-3 text-white" />
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="absolute w-full h-full scale-125"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.div
+                className="absolute bottom-8 left-8 bg-gradient-to-r from-pink-400 to-purple-600 p-1.5 rounded-full"
+                whileHover={{ scale: 1.3 }}
+              >
+                <TrendingUp className="w-3 h-3 text-white" />
+              </motion.div>
+            </motion.div>
 
             {/* Floating AI icons */}
             <motion.div
