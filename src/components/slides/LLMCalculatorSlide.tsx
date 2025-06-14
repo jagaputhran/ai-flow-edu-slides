@@ -35,12 +35,29 @@ const LLMCalculatorSlide = ({ slideNumber }: SlideProps) => {
 
   useEffect(() => {
     const calculateRAM = () => {
-      const inputSize = parseFloat(modelSize) || 0;
+      console.log('Calculating RAM with:', { modelSize, suffix, precision });
+      
+      const inputSize = parseFloat(modelSize);
+      console.log('Parsed model size:', inputSize);
+      
+      if (isNaN(inputSize) || inputSize <= 0) {
+        console.log('Invalid input size, setting to 0');
+        setResults({ rawRAM: 0, recommendedRAM: 0 });
+        return;
+      }
+
       const multiplier = suffix === 'M' ? 1e6 : 1e9;
       const modelParams = inputSize * multiplier;
       const rawRAMBytes = modelParams * bytesPerParam[precision];
       const rawRAMGB = rawRAMBytes / (1024 ** 3);
       const recommendedRAM = rawRAMGB * 1.3;
+
+      console.log('Calculation results:', {
+        modelParams,
+        rawRAMBytes,
+        rawRAMGB,
+        recommendedRAM
+      });
 
       setResults({
         rawRAM: rawRAMGB,
@@ -165,7 +182,7 @@ const LLMCalculatorSlide = ({ slideNumber }: SlideProps) => {
           {/* Results */}
           <div className="space-y-6">
             <motion.div
-              key={results.rawRAM}
+              key={`raw-${results.rawRAM}`}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -186,7 +203,7 @@ const LLMCalculatorSlide = ({ slideNumber }: SlideProps) => {
             </motion.div>
 
             <motion.div
-              key={results.recommendedRAM}
+              key={`recommended-${results.recommendedRAM}`}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
