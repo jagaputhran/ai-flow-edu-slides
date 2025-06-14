@@ -1,6 +1,5 @@
-
 import { motion } from "framer-motion";
-import { Clock, TrendingUp, Globe, Zap, Brain, Users, Building2, ExternalLink, Database, Cpu, Network, Tv } from "lucide-react";
+import { Clock, TrendingUp, Globe, Zap, Brain, Users, Building2, ExternalLink, Database, Cpu, Network } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -13,12 +12,6 @@ const WhyAISlide = ({ slideNumber }: SlideProps) => {
       source: "McKinsey Global Institute",
       url: "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-age-of-ai",
       icon: Building2
-    },
-    {
-      title: "How Comcast is Using AI to Enhance Customer Service and Network Management",
-      source: "Tech Target",
-      url: "https://www.techtarget.com/searchenterpriseai/news/252519622/Comcast-uses-AI-to-improve-customer-service-network-ops",
-      icon: Tv
     },
     {
       title: "ChatGPT Reaches 100M Users in 2 Months",
