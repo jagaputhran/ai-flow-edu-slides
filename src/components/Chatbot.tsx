@@ -11,6 +11,7 @@ interface Message {
   text: string;
   isUser: boolean;
   timestamp: Date;
+  followUpQuestions?: string[];
 }
 
 const Chatbot = () => {
@@ -21,6 +22,12 @@ const Chatbot = () => {
       text: "Hi! I'm JAGA, your AI learning companion. I can help you with our 19-slide AI presentation, but I'm also here to answer any general questions you might have. Ask me about AI concepts, technology, our slides, or anything else you're curious about!",
       isUser: false,
       timestamp: new Date(),
+      followUpQuestions: [
+        "What's in slide 1?",
+        "Show me the presentation agenda",
+        "Explain what AI is",
+        "What are neural networks?"
+      ],
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -34,6 +41,143 @@ const Chatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const getFollowUpQuestions = (userMessage: string, aiResponse: string): string[] => {
+    const message = userMessage.toLowerCase();
+    const response = aiResponse.toLowerCase();
+    
+    // Generate follow-up questions based on the topic discussed
+    if (message.includes('slide') && message.match(/\d+/)) {
+      const slideNum = parseInt(message.match(/\d+/)![0]);
+      const nextSlide = slideNum + 1;
+      const prevSlide = slideNum - 1;
+      
+      const questions = [];
+      if (prevSlide >= 1) questions.push(`What about slide ${prevSlide}?`);
+      if (nextSlide <= 19) questions.push(`Tell me about slide ${nextSlide}`);
+      questions.push("Show me the full agenda");
+      questions.push("How does this relate to the overall presentation?");
+      
+      return questions.slice(0, 3);
+    }
+    
+    if (message.includes('agenda') || message.includes('presentation') || message.includes('slides')) {
+      return [
+        "Tell me about slide 3 - What is AI?",
+        "Jump to slide 10 - LLM Calculator",
+        "What's covered in the RAG slides?",
+        "Show me the security-related slides"
+      ];
+    }
+    
+    if (message.includes('neural network') || message.includes('neural')) {
+      return [
+        "How do transformers work?",
+        "What's the difference between ML and DL?",
+        "Tell me about slide 8 - Transformer Architecture",
+        "How are neural networks trained?"
+      ];
+    }
+    
+    if (message.includes('transformer') || message.includes('attention')) {
+      return [
+        "What about generative AI?",
+        "How do LLMs work?",
+        "Tell me about slide 9 - Generative AI",
+        "What's the relationship with neural networks?"
+      ];
+    }
+    
+    if (message.includes('rag') || message.includes('retrieval')) {
+      return [
+        "Try the RAG Quest demo",
+        "What about slide 12 - RAG Quest?",
+        "How does RAG improve AI responses?",
+        "What are the limitations of RAG?"
+      ];
+    }
+    
+    if (message.includes('generative ai') || message.includes('generative')) {
+      return [
+        "How do LLMs calculate memory needs?",
+        "What about slide 10 - LLM Calculator?",
+        "Tell me about AI creativity",
+        "What are the risks of generative AI?"
+      ];
+    }
+    
+    if (message.includes('llm') || message.includes('language model')) {
+      return [
+        "How much RAM do LLMs need?",
+        "What about LLM security?",
+        "Tell me about slide 17 - LLM Security",
+        "Try the injection simulator"
+      ];
+    }
+    
+    if (message.includes('agentic') || message.includes('agent')) {
+      return [
+        "How has agentic AI evolved?",
+        "What about slide 14 - Evolution of Agentic AI?",
+        "Show me real-world use cases",
+        "What's the future of AI agents?"
+      ];
+    }
+    
+    if (message.includes('security') || message.includes('injection') || message.includes('attack')) {
+      return [
+        "Try the injection simulator",
+        "What about slide 18 - LLM Injection Simulator?",
+        "What are other AI risks?",
+        "How can we protect AI systems?"
+      ];
+    }
+    
+    if (message.includes('ethics') || message.includes('risk') || message.includes('bias')) {
+      return [
+        "What about AI security?",
+        "Tell me about slide 17 - LLM Security",
+        "How do we ensure fair AI?",
+        "What's being done about AI bias?"
+      ];
+    }
+    
+    if (message.includes('future') || message.includes('agi') || message.includes('prediction')) {
+      return [
+        "What's AGI exactly?",
+        "When will we achieve AGI?",
+        "What are current AI limitations?",
+        "How will AI change society?"
+      ];
+    }
+    
+    if (message.includes('use case') || message.includes('application') || message.includes('industry')) {
+      return [
+        "Which industries use AI most?",
+        "What about healthcare AI?",
+        "Tell me about AI in finance",
+        "How is AI changing education?"
+      ];
+    }
+    
+    // General learning questions
+    if (message.includes('learn') || message.includes('study') || message.includes('career')) {
+      return [
+        "What skills do I need for AI?",
+        "Tell me about slide 4 - Data Roles",
+        "How do I start in machine learning?",
+        "What programming languages for AI?"
+      ];
+    }
+    
+    // Default follow-up questions for general topics
+    return [
+      "Tell me more about this topic",
+      "How does this relate to our slides?",
+      "Show me a practical example",
+      "What should I learn next?"
+    ];
+  };
 
   const getAIResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
@@ -188,21 +332,30 @@ const Chatbot = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue('');
     setIsTyping(true);
 
     // Simulate AI thinking time
     setTimeout(() => {
+      const responseText = getAIResponse(currentInput);
+      const followUpQuestions = getFollowUpQuestions(currentInput, responseText);
+      
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: getAIResponse(inputValue),
+        text: responseText,
         isUser: false,
         timestamp: new Date(),
+        followUpQuestions,
       };
       
       setMessages(prev => [...prev, aiResponse]);
       setIsTyping(false);
     }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+  };
+
+  const handleFollowUpClick = (question: string) => {
+    setInputValue(question);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -284,17 +437,35 @@ const Chatbot = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                       >
-                        <div
-                          className={`max-w-[80%] p-3 rounded-lg ${
-                            message.isUser
-                              ? 'bg-blue-500 text-white'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
-                        >
-                          <p className="text-sm">{message.text}</p>
-                          <p className="text-xs opacity-70 mt-1">
-                            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </p>
+                        <div className={`max-w-[80%] ${message.isUser ? 'text-right' : 'text-left'}`}>
+                          <div
+                            className={`p-3 rounded-lg ${
+                              message.isUser
+                                ? 'bg-blue-500 text-white'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            <p className="text-sm">{message.text}</p>
+                            <p className="text-xs opacity-70 mt-1">
+                              {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          </div>
+                          
+                          {/* Follow-up Questions */}
+                          {!message.isUser && message.followUpQuestions && message.followUpQuestions.length > 0 && (
+                            <div className="mt-2 space-y-1">
+                              <p className="text-xs text-gray-500 mb-1">💡 Follow-up questions:</p>
+                              {message.followUpQuestions.map((question, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => handleFollowUpClick(question)}
+                                  className="block w-full text-left text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 px-2 py-1 rounded border border-blue-200 transition-colors"
+                                >
+                                  {question}
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </motion.div>
                     ))}
