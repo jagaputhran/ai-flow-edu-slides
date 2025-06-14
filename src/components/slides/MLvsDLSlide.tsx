@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { GitBranch, Layers, ArrowRight } from "lucide-react";
+import { GitBranch, Layers, ArrowRight, Zap } from "lucide-react";
 
 interface SlideProps {
   slideNumber: number;
@@ -123,35 +123,180 @@ const MLvsDLSlide = ({ slideNumber }: SlideProps) => {
             <h2 className="text-2xl font-bold text-white">Deep Learning</h2>
           </div>
 
-          {/* Neural Network Visualization */}
+          {/* Advanced Neural Network Visualization */}
           <div className="mb-6">
-            <div className="bg-purple-500/10 rounded-lg p-4 border border-purple-400/20">
-              <div className="flex justify-between items-center">
-                <div className="space-y-2">
-                  <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                  <div className="w-3 h-3 bg-purple-300 rounded-full"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                </div>
+            <div className="bg-purple-500/10 rounded-lg p-6 border border-purple-400/20 relative overflow-hidden">
+              {/* Background Neural Connections */}
+              <div className="absolute inset-0 opacity-20">
+                {[...Array(15)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-px bg-gradient-to-r from-purple-400 to-pink-400"
+                    style={{
+                      left: `${10 + (i % 5) * 20}%`,
+                      top: `${10 + Math.floor(i / 5) * 30}%`,
+                      width: `${20 + (i % 3) * 10}%`,
+                      height: '1px',
+                      transform: `rotate(${(i * 23) % 180}deg)`,
+                    }}
+                    animate={{
+                      opacity: [0.1, 0.6, 0.1],
+                      scaleX: [0.8, 1.2, 0.8],
+                    }}
+                    transition={{
+                      duration: 2 + (i % 3),
+                      repeat: Infinity,
+                      delay: i * 0.1,
+                    }}
+                  />
+                ))}
               </div>
-              <div className="text-center mt-2">
-                <span className="text-xs text-purple-400">Input → Hidden Layers → Output</span>
+
+              {/* Neural Network Layers */}
+              <div className="relative z-10">
+                <div className="flex justify-between items-center h-48">
+                  {/* Input Layer */}
+                  <div className="flex flex-col justify-center space-y-3">
+                    <div className="text-xs text-purple-300 mb-2">Input</div>
+                    {[...Array(6)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg"
+                        animate={{
+                          scale: [1, 1.3, 1],
+                          boxShadow: [
+                            '0 0 5px rgba(147, 51, 234, 0.5)',
+                            '0 0 20px rgba(147, 51, 234, 0.8)',
+                            '0 0 5px rgba(147, 51, 234, 0.5)',
+                          ],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          delay: i * 0.2,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Hidden Layer 1 */}
+                  <div className="flex flex-col justify-center space-y-2">
+                    <div className="text-xs text-purple-300 mb-2">Hidden 1</div>
+                    {[...Array(8)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-400 to-pink-400"
+                        animate={{
+                          scale: [0.8, 1.2, 0.8],
+                          opacity: [0.6, 1, 0.6],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          delay: 0.3 + i * 0.1,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Hidden Layer 2 */}
+                  <div className="flex flex-col justify-center space-y-2">
+                    <div className="text-xs text-purple-300 mb-2">Hidden 2</div>
+                    {[...Array(10)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-3 h-3 rounded-full bg-gradient-to-r from-pink-400 to-red-400"
+                        animate={{
+                          scale: [0.7, 1.1, 0.7],
+                          rotate: [0, 180, 360],
+                        }}
+                        transition={{
+                          duration: 2.5,
+                          repeat: Infinity,
+                          delay: 0.6 + i * 0.08,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Hidden Layer 3 */}
+                  <div className="flex flex-col justify-center space-y-2">
+                    <div className="text-xs text-purple-300 mb-2">Hidden 3</div>
+                    {[...Array(6)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-3 h-3 rounded-full bg-gradient-to-r from-red-400 to-orange-400"
+                        animate={{
+                          scale: [0.9, 1.4, 0.9],
+                          y: [0, -2, 0],
+                        }}
+                        transition={{
+                          duration: 1.8,
+                          repeat: Infinity,
+                          delay: 0.9 + i * 0.15,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Output Layer */}
+                  <div className="flex flex-col justify-center space-y-4">
+                    <div className="text-xs text-purple-300 mb-2">Output</div>
+                    {[...Array(3)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-4 h-4 rounded-full bg-gradient-to-r from-orange-400 to-green-400 shadow-lg"
+                        animate={{
+                          scale: [1, 1.5, 1],
+                          boxShadow: [
+                            '0 0 5px rgba(34, 197, 94, 0.5)',
+                            '0 0 25px rgba(34, 197, 94, 0.9)',
+                            '0 0 5px rgba(34, 197, 94, 0.5)',
+                          ],
+                        }}
+                        transition={{
+                          duration: 2.2,
+                          repeat: Infinity,
+                          delay: 1.2 + i * 0.3,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Data Flow Animation */}
+                <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2">
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full bg-yellow-400 shadow-lg"
+                      style={{ left: '0%' }}
+                      animate={{
+                        left: ['0%', '25%', '50%', '75%', '100%'],
+                        opacity: [0, 1, 1, 1, 0],
+                        scale: [0.5, 1, 0.8, 1, 0.5],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay: i * 1,
+                        ease: "easeInOut",
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Neural Activity Indicator */}
+                <div className="absolute top-2 right-2">
+                  <motion.div
+                    className="flex items-center gap-1 text-xs text-purple-300"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <Zap className="w-3 h-3" />
+                    <span>Processing...</span>
+                  </motion.div>
+                </div>
               </div>
             </div>
           </div>
