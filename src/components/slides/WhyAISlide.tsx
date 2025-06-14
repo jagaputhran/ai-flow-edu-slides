@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Clock, TrendingUp, Globe, Zap, Brain, Users, Building2, ExternalLink, Database, Cpu, Network, Tv } from "lucide-react";
 
@@ -14,9 +15,9 @@ const WhyAISlide = ({ slideNumber }: SlideProps) => {
       icon: Building2
     },
     {
-      title: "Comcast Uses AI to Transform Customer Experience & Network Operations",
-      source: "Comcast Corporation",
-      url: "https://corporate.comcast.com/stories/how-comcast-is-using-ai-to-improve-customer-experience",
+      title: "How Comcast is Using AI to Enhance Customer Service and Network Management",
+      source: "Tech Target",
+      url: "https://www.techtarget.com/searchenterpriseai/news/252519622/Comcast-uses-AI-to-improve-customer-service-network-ops",
       icon: Tv
     },
     {
