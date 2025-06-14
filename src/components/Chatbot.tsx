@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -179,16 +178,26 @@ const Chatbot = () => {
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
             className="fixed bottom-24 left-6 z-40 w-96 h-[500px]"
           >
-            <Card className="h-full bg-white/95 backdrop-blur-sm border border-white/20 shadow-2xl">
-              <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Bot className="h-5 w-5" />
-                  JAGA - AI Learning Assistant
-                </CardTitle>
-                <p className="text-blue-100 text-sm">Ask me about any AI topic!</p>
+            <Card className="h-full bg-white/95 backdrop-blur-sm border border-white/20 shadow-2xl flex flex-col">
+              <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg pb-3 flex-shrink-0 relative">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Bot className="h-5 w-5" />
+                    <CardTitle className="text-lg">JAGA - AI Learning Assistant</CardTitle>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(false)}
+                    className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-blue-100 text-sm mt-1">Ask me about any AI topic!</p>
               </CardHeader>
               
-              <CardContent className="p-0 h-full flex flex-col">
+              <CardContent className="p-0 flex-1 flex flex-col min-h-0">
                 <ScrollArea className="flex-1 p-4">
                   <div className="space-y-4">
                     {messages.map((message) => (
@@ -249,7 +258,7 @@ const Chatbot = () => {
                   </div>
                 </ScrollArea>
                 
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4 border-t border-gray-200 flex-shrink-0">
                   <div className="flex gap-2">
                     <Input
                       value={inputValue}
