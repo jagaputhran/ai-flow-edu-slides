@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Zap, Code, ExternalLink, Cpu, Network, Bot, Brain } from "lucide-react";
 
@@ -15,116 +16,218 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 text-center relative overflow-hidden">
-      {/* Enhanced AI Network Visual */}
+      {/* Advanced AI Brain Animation */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="mb-8 relative"
+        transition={{ duration: 1.2, delay: 0.2 }}
+        className="mb-8 relative h-48 flex items-center justify-center"
       >
-        <div className="relative inline-block">
-          {/* Circuit board pattern */}
+        {/* Central AI Brain */}
+        <motion.div
+          animate={{ 
+            rotateY: [0, 360],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ 
+            rotateY: { duration: 8, repeat: Infinity, ease: "linear" },
+            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }}
+          className="relative"
+        >
+          {/* Brain core */}
           <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="w-40 h-40 relative"
+            animate={{
+              boxShadow: [
+                "0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(147, 51, 234, 0.3)",
+                "0 0 40px rgba(147, 51, 234, 0.6), 0 0 60px rgba(16, 185, 129, 0.4)",
+                "0 0 30px rgba(16, 185, 129, 0.5), 0 0 50px rgba(59, 130, 246, 0.4)"
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="w-24 h-24 bg-gradient-to-br from-blue-500 via-purple-600 to-green-500 rounded-full flex items-center justify-center relative z-10"
           >
-            {/* Main circuit nodes */}
-            {[...Array(8)].map((_, i) => (
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 1],
+                rotate: [0, 180, 360]
+              }}
+              transition={{ 
+                scale: { duration: 2, repeat: Infinity },
+                rotate: { duration: 6, repeat: Infinity, ease: "linear" }
+              }}
+            >
+              <Brain className="w-12 h-12 text-white" />
+            </motion.div>
+          </motion.div>
+
+          {/* Neural network nodes */}
+          {[...Array(12)].map((_, i) => {
+            const angle = (i * 30) * Math.PI / 180;
+            const radius = 80;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+            
+            return (
               <motion.div
-                key={i}
-                className="absolute w-4 h-4 bg-blue-400 rounded-full"
+                key={`node-${i}`}
+                className="absolute w-3 h-3 bg-blue-400 rounded-full"
                 style={{
                   left: "50%",
                   top: "50%",
-                  transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-60px)`,
+                  transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
                 }}
                 animate={{ 
-                  scale: [1, 1.3, 1],
-                  opacity: [0.6, 1, 0.6]
+                  scale: [0.8, 1.5, 0.8],
+                  opacity: [0.4, 1, 0.4],
+                  backgroundColor: [
+                    "rgb(59, 130, 246)",
+                    "rgb(147, 51, 234)",
+                    "rgb(16, 185, 129)",
+                    "rgb(59, 130, 246)"
+                  ]
                 }}
                 transition={{ 
-                  duration: 2, 
+                  duration: 3, 
                   repeat: Infinity, 
                   delay: i * 0.2 
                 }}
               />
-            ))}
+            );
+          })}
+
+          {/* Neural connections */}
+          {[...Array(12)].map((_, i) => {
+            const angle = (i * 30) * Math.PI / 180;
+            const nextAngle = ((i + 1) * 30) * Math.PI / 180;
             
-            {/* Connecting lines */}
-            {[...Array(8)].map((_, i) => (
+            return (
               <motion.div
-                key={`line-${i}`}
-                className="absolute w-0.5 h-16 bg-gradient-to-t from-blue-400/20 via-blue-400/80 to-blue-400/20"
+                key={`connection-${i}`}
+                className="absolute w-0.5 h-20 bg-gradient-to-t from-transparent via-blue-400/60 to-transparent"
                 style={{
                   left: "50%",
                   top: "50%",
                   transformOrigin: "50% 100%",
-                  transform: `translateX(-50%) rotate(${i * 45}deg)`,
+                  transform: `translateX(-50%) rotate(${i * 30}deg)`,
                 }}
                 animate={{ 
-                  opacity: [0.3, 0.8, 0.3],
-                  scaleY: [0.8, 1.1, 0.8]
+                  opacity: [0.2, 0.8, 0.2],
+                  scaleY: [0.5, 1.2, 0.5]
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
                   delay: i * 0.1,
                 }}
               />
-            ))}
-          </motion.div>
-
-          {/* Central AI processor */}
-          <motion.div
-            animate={{ 
-              boxShadow: [
-                "0 0 20px rgba(59, 130, 246, 0.5)",
-                "0 0 40px rgba(147, 51, 234, 0.8)",
-                "0 0 20px rgba(59, 130, 246, 0.5)"
-              ]
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-600 to-green-500 rounded-lg flex items-center justify-center relative z-10"
-          >
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Cpu className="w-10 h-10 text-white" />
-            </motion.div>
-          </motion.div>
+            );
+          })}
 
           {/* Data flow particles */}
-          {[...Array(16)].map((_, i) => (
+          {[...Array(24)].map((_, i) => {
+            const angle = (i * 15) * Math.PI / 180;
+            const startRadius = 30;
+            const endRadius = 100;
+            
+            return (
+              <motion.div
+                key={`particle-${i}`}
+                className="absolute w-1 h-1 rounded-full"
+                style={{
+                  left: "50%",
+                  top: "50%",
+                  background: i % 3 === 0 ? "#3b82f6" : i % 3 === 1 ? "#8b5cf6" : "#10b981"
+                }}
+                animate={{
+                  x: [
+                    Math.cos(angle) * startRadius,
+                    Math.cos(angle) * endRadius,
+                    Math.cos(angle) * startRadius
+                  ],
+                  y: [
+                    Math.sin(angle) * startRadius,
+                    Math.sin(angle) * endRadius,
+                    Math.sin(angle) * startRadius
+                  ],
+                  opacity: [0, 1, 0],
+                  scale: [0.5, 1.5, 0.5]
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  delay: i * 0.1,
+                  ease: "easeInOut"
+                }}
+              />
+            );
+          })}
+
+          {/* Orbiting satellites */}
+          {[...Array(3)].map((_, i) => (
             <motion.div
-              key={`particle-${i}`}
-              className="absolute w-1 h-1 bg-blue-400 rounded-full"
+              key={`satellite-${i}`}
+              className="absolute"
               animate={{
-                x: [
-                  Math.cos((i * 22.5) * Math.PI / 180) * 80,
-                  Math.cos((i * 22.5) * Math.PI / 180) * 40,
-                  Math.cos((i * 22.5) * Math.PI / 180) * 80
-                ],
-                y: [
-                  Math.sin((i * 22.5) * Math.PI / 180) * 80,
-                  Math.sin((i * 22.5) * Math.PI / 180) * 40,
-                  Math.sin((i * 22.5) * Math.PI / 180) * 80
-                ],
-                opacity: [0, 1, 0],
+                rotate: [0, 360]
               }}
               transition={{
-                duration: 4,
+                duration: 8 + i * 2,
                 repeat: Infinity,
-                delay: i * 0.1,
+                ease: "linear"
               }}
               style={{
                 left: "50%",
                 top: "50%",
+                transform: "translate(-50%, -50%)"
               }}
-            />
+            >
+              <motion.div
+                className={`w-2 h-2 rounded-full ${
+                  i === 0 ? "bg-blue-400" : i === 1 ? "bg-purple-400" : "bg-green-400"
+                }`}
+                style={{
+                  transform: `translateY(-${60 + i * 15}px)`
+                }}
+                animate={{
+                  scale: [1, 1.5, 1],
+                  opacity: [0.6, 1, 0.6]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.5
+                }}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* Background energy waves */}
+        {[...Array(4)].map((_, i) => (
+          <motion.div
+            key={`wave-${i}`}
+            className="absolute border border-blue-400/20 rounded-full"
+            style={{
+              width: `${120 + i * 40}px`,
+              height: `${120 + i * 40}px`,
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)"
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.3, 0.1],
+              rotate: [0, 360]
+            }}
+            transition={{
+              duration: 6 + i * 2,
+              repeat: Infinity,
+              delay: i * 0.5,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
       </motion.div>
 
       <motion.h1
