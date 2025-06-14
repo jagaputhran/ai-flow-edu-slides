@@ -91,139 +91,190 @@ const Chatbot = () => {
   };
 
   const getFollowUpQuestions = (userMessage: string, aiResponse: string): string[] => {
-    const message = userMessage.toLowerCase();
-    const response = aiResponse.toLowerCase();
+    const userMsg = userMessage.toLowerCase();
+    const aiMsg = aiResponse.toLowerCase();
     
-    // Generate follow-up questions based on the topic discussed
-    if (message.includes('slide') && message.match(/\d+/)) {
-      const slideNum = parseInt(message.match(/\d+/)![0]);
-      const nextSlide = slideNum + 1;
-      const prevSlide = slideNum - 1;
-      
+    console.log('Generating follow-up for user message:', userMsg);
+    console.log('AI response context:', aiMsg.substring(0, 100) + '...');
+    
+    // Check for specific slide numbers first
+    const slideMatch = userMsg.match(/slide\s*(\d+)/);
+    if (slideMatch) {
+      const slideNum = parseInt(slideMatch[1]);
       const questions = [];
-      if (prevSlide >= 1) questions.push(`What about slide ${prevSlide}?`);
-      if (nextSlide <= 19) questions.push(`Tell me about slide ${nextSlide}`);
-      questions.push("Show me the full agenda");
-      questions.push("How does this relate to the overall presentation?");
       
-      return questions.slice(0, 3);
+      // Add navigation questions
+      if (slideNum > 1) questions.push(`What's in slide ${slideNum - 1}?`);
+      if (slideNum < 19) questions.push(`Tell me about slide ${slideNum + 1}`);
+      questions.push("Show me the full agenda");
+      
+      // Add topic-specific questions based on slide content
+      if (slideNum === 3) questions.push("What are the different types of AI?");
+      if (slideNum === 7) questions.push("How do neural networks learn?");
+      if (slideNum === 8) questions.push("What makes transformers special?");
+      if (slideNum === 10) questions.push("Try the LLM calculator");
+      if (slideNum === 12) questions.push("Try the RAG Quest demo");
+      
+      return questions.slice(0, 4);
     }
     
-    if (message.includes('agenda') || message.includes('presentation') || message.includes('slides')) {
+    // Topic-based follow-ups
+    if (userMsg.includes('neural network') || aiMsg.includes('neural network')) {
       return [
-        "Tell me about slide 3 - What is AI?",
-        "Jump to slide 10 - LLM Calculator",
-        "What's covered in the RAG slides?",
-        "Show me the security-related slides"
+        "How do neural networks learn?",
+        "What about deep learning?",
+        "Tell me about slide 7 - Neural Networks",
+        "Show me transformer architecture"
       ];
     }
     
-    if (message.includes('neural network') || message.includes('neural')) {
+    if (userMsg.includes('transformer') || aiMsg.includes('transformer')) {
       return [
-        "How do transformers work?",
-        "What's the difference between ML and DL?",
-        "Tell me about slide 8 - Transformer Architecture",
-        "How are neural networks trained?"
-      ];
-    }
-    
-    if (message.includes('transformer') || message.includes('attention')) {
-      return [
-        "What about generative AI?",
-        "How do LLMs work?",
+        "What about attention mechanisms?",
+        "How do LLMs use transformers?",
         "Tell me about slide 9 - Generative AI",
-        "What's the relationship with neural networks?"
+        "What's the difference from CNNs?"
       ];
     }
     
-    if (message.includes('rag') || message.includes('retrieval')) {
+    if (userMsg.includes('ai') && !userMsg.includes('slide')) {
+      return [
+        "What are the main types of AI?",
+        "Show me slide 3 - What is AI?",
+        "How has AI evolved over time?",
+        "What are real-world AI applications?"
+      ];
+    }
+    
+    if (userMsg.includes('generative') || aiMsg.includes('generative')) {
+      return [
+        "How do generative models work?",
+        "What about LLMs specifically?",
+        "Tell me about slide 10 - LLM Calculator",
+        "Show me practical examples"
+      ];
+    }
+    
+    if (userMsg.includes('rag') || aiMsg.includes('retrieval')) {
       return [
         "Try the RAG Quest demo",
-        "What about slide 12 - RAG Quest?",
-        "How does RAG improve AI responses?",
-        "What are the limitations of RAG?"
+        "How does RAG improve accuracy?",
+        "What are RAG limitations?",
+        "Tell me about slide 12"
       ];
     }
     
-    if (message.includes('generative ai') || message.includes('generative')) {
-      return [
-        "How do LLMs calculate memory needs?",
-        "What about slide 10 - LLM Calculator?",
-        "Tell me about AI creativity",
-        "What are the risks of generative AI?"
-      ];
-    }
-    
-    if (message.includes('llm') || message.includes('language model')) {
+    if (userMsg.includes('llm') || userMsg.includes('language model')) {
       return [
         "How much RAM do LLMs need?",
-        "What about LLM security?",
-        "Tell me about slide 17 - LLM Security",
-        "Try the injection simulator"
+        "Try the LLM calculator",
+        "What about LLM security risks?",
+        "Tell me about slide 17"
       ];
     }
     
-    if (message.includes('agentic') || message.includes('agent')) {
-      return [
-        "How has agentic AI evolved?",
-        "What about slide 14 - Evolution of Agentic AI?",
-        "Show me real-world use cases",
-        "What's the future of AI agents?"
-      ];
-    }
-    
-    if (message.includes('security') || message.includes('injection') || message.includes('attack')) {
+    if (userMsg.includes('security') || userMsg.includes('injection')) {
       return [
         "Try the injection simulator",
-        "What about slide 18 - LLM Injection Simulator?",
-        "What are other AI risks?",
-        "How can we protect AI systems?"
+        "What other AI risks exist?",
+        "How can we protect AI systems?",
+        "Tell me about slide 18"
       ];
     }
     
-    if (message.includes('ethics') || message.includes('risk') || message.includes('bias')) {
+    if (userMsg.includes('agentic') || aiMsg.includes('agentic')) {
       return [
-        "What about AI security?",
-        "Tell me about slide 17 - LLM Security",
-        "How do we ensure fair AI?",
-        "What's being done about AI bias?"
+        "How have AI agents evolved?",
+        "What can agentic AI do today?",
+        "Tell me about slide 14",
+        "Show me practical use cases"
       ];
     }
     
-    if (message.includes('future') || message.includes('agi') || message.includes('prediction')) {
+    if (userMsg.includes('agenda') || userMsg.includes('presentation')) {
       return [
-        "What's AGI exactly?",
+        "Tell me about slide 3 - What is AI?",
+        "Jump to slide 8 - Transformers",
+        "Show me the RAG slides",
+        "What about AI security?"
+      ];
+    }
+    
+    if (userMsg.includes('machine learning') || userMsg.includes('ml')) {
+      return [
+        "What's the difference with deep learning?",
+        "Tell me about slide 6 - ML vs DL",
+        "How do I start learning ML?",
+        "Show me practical applications"
+      ];
+    }
+    
+    if (userMsg.includes('future') || userMsg.includes('agi')) {
+      return [
         "When will we achieve AGI?",
         "What are current AI limitations?",
+        "Tell me about slide 19 - Future of AI",
         "How will AI change society?"
       ];
     }
     
-    if (message.includes('use case') || message.includes('application') || message.includes('industry')) {
+    if (userMsg.includes('use case') || userMsg.includes('application')) {
       return [
-        "Which industries use AI most?",
-        "What about healthcare AI?",
-        "Tell me about AI in finance",
-        "How is AI changing education?"
+        "What industries use AI most?",
+        "Tell me about slide 15 - Use Cases",
+        "How is AI used in healthcare?",
+        "Show me business applications"
       ];
     }
     
-    // General learning questions
-    if (message.includes('learn') || message.includes('study') || message.includes('career')) {
+    if (userMsg.includes('risk') || userMsg.includes('ethic')) {
+      return [
+        "What are the main AI risks?",
+        "Tell me about slide 16 - Risks & Ethics",
+        "How do we ensure fair AI?",
+        "What about job displacement?"
+      ];
+    }
+    
+    // Conversational follow-ups for general questions
+    if (userMsg.includes('hello') || userMsg.includes('hi')) {
+      return [
+        "Show me the presentation agenda",
+        "What's in slide 1?",
+        "Explain what AI is",
+        "Tell me about neural networks"
+      ];
+    }
+    
+    if (userMsg.includes('learn') || userMsg.includes('study')) {
       return [
         "What skills do I need for AI?",
         "Tell me about slide 4 - Data Roles",
-        "How do I start in machine learning?",
-        "What programming languages for AI?"
+        "How do I start with programming?",
+        "Show me learning resources"
       ];
     }
     
-    // Default follow-up questions for general topics
+    // Default contextual questions based on AI response content
+    if (aiMsg.includes('slide')) {
+      const slideInResponse = aiMsg.match(/slide (\d+)/);
+      if (slideInResponse) {
+        const num = parseInt(slideInResponse[1]);
+        return [
+          `What's the next slide after ${num}?`,
+          "Show me related topics",
+          "Give me more details",
+          "How does this connect to other concepts?"
+        ];
+      }
+    }
+    
+    // Generic but contextual fallbacks
     return [
-      "Tell me more about this topic",
-      "How does this relate to our slides?",
-      "Show me a practical example",
-      "What should I learn next?"
+      "Can you explain this in simpler terms?",
+      "Show me a related slide",
+      "What's a practical example?",
+      "How can I learn more about this?"
     ];
   };
 
@@ -388,6 +439,8 @@ const Chatbot = () => {
     setTimeout(() => {
       const responseText = getAIResponse(currentInput);
       const followUpQuestions = getFollowUpQuestions(currentInput, responseText);
+      
+      console.log('Generated follow-up questions:', followUpQuestions);
       
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
