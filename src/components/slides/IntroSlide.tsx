@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Zap, Code, ExternalLink, Cpu, Network, Bot, Brain } from "lucide-react";
 
@@ -168,33 +169,33 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         interactive learning.
       </motion.p>
 
-      {/* Enhanced feature highlights */}
+      {/* Enhanced feature highlights - Fixed layout */}
       <motion.div
         initial={{ y: 30, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.8 }}
-        className="flex justify-center gap-8 items-center mb-8"
+        className="flex flex-wrap justify-center gap-4 items-center mb-8"
       >
         <motion.div 
           whileHover={{ scale: 1.1, y: -5 }}
           className="flex items-center gap-2 text-blue-400 bg-blue-500/10 px-4 py-2 rounded-lg border border-blue-400/30"
         >
           <Zap className="w-5 h-5" />
-          <span>Interactive</span>
+          <span className="whitespace-nowrap">Interactive</span>
         </motion.div>
         <motion.div 
           whileHover={{ scale: 1.1, y: -5 }}
           className="flex items-center gap-2 text-purple-400 bg-purple-500/10 px-4 py-2 rounded-lg border border-purple-400/30"
         >
           <Code className="w-5 h-5" />
-          <span>Practical</span>
+          <span className="whitespace-nowrap">Practical</span>
         </motion.div>
         <motion.div 
           whileHover={{ scale: 1.1, y: -5 }}
           className="flex items-center gap-2 text-green-400 bg-green-500/10 px-4 py-2 rounded-lg border border-green-400/30"
         >
           <Brain className="w-5 h-5" />
-          <span>Comprehensive</span>
+          <span className="whitespace-nowrap">Comprehensive</span>
         </motion.div>
       </motion.div>
 
