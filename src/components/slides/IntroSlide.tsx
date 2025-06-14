@@ -21,7 +21,7 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.2 }}
-        className="mb-6 relative h-48 flex items-center justify-center"
+        className="mb-8 relative h-48 flex items-center justify-center"
       >
         {/* Central AI Brain */}
         <motion.div
@@ -230,114 +230,6 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         ))}
       </motion.div>
 
-      {/* Creative Animated "AI with JAGA" Text */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
-        className="mb-8 relative"
-      >
-        <motion.div
-          animate={{
-            background: [
-              "linear-gradient(45deg, #3b82f6, #8b5cf6, #10b981, #f59e0b)",
-              "linear-gradient(45deg, #8b5cf6, #10b981, #f59e0b, #3b82f6)",
-              "linear-gradient(45deg, #10b981, #f59e0b, #3b82f6, #8b5cf6)",
-              "linear-gradient(45deg, #f59e0b, #3b82f6, #8b5cf6, #10b981)"
-            ]
-          }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="text-6xl md:text-8xl font-black bg-clip-text text-transparent relative inline-block"
-          style={{
-            backgroundSize: "400% 400%",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent"
-          }}
-        >
-          <motion.span
-            animate={{
-              textShadow: [
-                "0 0 20px rgba(59, 130, 246, 0.5)",
-                "0 0 40px rgba(147, 51, 234, 0.5)",
-                "0 0 30px rgba(16, 185, 129, 0.5)",
-                "0 0 35px rgba(245, 158, 11, 0.5)"
-              ]
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            AI
-          </motion.span>
-          <motion.span
-            className="mx-4 text-white/60"
-            animate={{
-              opacity: [0.6, 1, 0.6],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            with
-          </motion.span>
-          <motion.span
-            animate={{
-              rotate: [0, 5, -5, 0],
-              scale: [1, 1.05, 1]
-            }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-          >
-            JAGA
-          </motion.span>
-        </motion.div>
-
-        {/* Floating particles around text */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={`text-particle-${i}`}
-              className={`absolute w-2 h-2 rounded-full ${
-                i % 4 === 0 ? "bg-blue-400/60" : 
-                i % 4 === 1 ? "bg-purple-400/60" : 
-                i % 4 === 2 ? "bg-green-400/60" : "bg-yellow-400/60"
-              }`}
-              animate={{
-                x: [0, Math.random() * 100 - 50, 0],
-                y: [0, Math.random() * 80 - 40, 0],
-                opacity: [0, 1, 0],
-                scale: [0.5, 1.5, 0.5],
-              }}
-              transition={{
-                duration: 3 + i * 0.5,
-                repeat: Infinity,
-                delay: i * 0.2,
-              }}
-              style={{
-                left: `${20 + i * 10}%`,
-                top: `${30 + (i % 3) * 20}%`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Glowing border effect */}
-        <motion.div
-          className="absolute inset-0 border-2 border-transparent rounded-lg"
-          animate={{
-            borderColor: [
-              "rgba(59, 130, 246, 0.3)",
-              "rgba(147, 51, 234, 0.3)",
-              "rgba(16, 185, 129, 0.3)",
-              "rgba(245, 158, 11, 0.3)"
-            ],
-            boxShadow: [
-              "0 0 30px rgba(59, 130, 246, 0.2)",
-              "0 0 40px rgba(147, 51, 234, 0.2)",
-              "0 0 35px rgba(16, 185, 129, 0.2)",
-              "0 0 38px rgba(245, 158, 11, 0.2)"
-            ]
-          }}
-          transition={{ duration: 4, repeat: Infinity }}
-        />
-      </motion.div>
-
       <motion.h1
         initial={{ y: 30, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
@@ -365,7 +257,7 @@ const IntroSlide = ({ slideNumber }: SlideProps) => {
         From foundational concepts to cutting-edge applications with interactive learning.
       </motion.p>
 
-      {/* Enhanced feature highlights */}
+      {/* Enhanced feature highlights - Fixed layout */}
       <motion.div
         initial={{ y: 30, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
