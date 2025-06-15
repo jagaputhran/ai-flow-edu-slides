@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, X, Bot, Mic, MicOff } from 'lucide-react';
+import { MessageCircle, Send, X, Bot, Mic, MicOff, Search, Key, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
@@ -12,6 +12,7 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   followUpQuestions?: string[];
+  isSearchResult?: boolean;
 }
 
 const Chatbot = () => {
@@ -19,14 +20,14 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm JAGA, your AI learning companion. I can help you with our 19-slide AI presentation, but I'm also here to answer any general questions you might have. Ask me about AI concepts, technology, our slides, or anything else you're curious about!",
+      text: "Hi! I'm JAGA, your AI learning companion with web search capabilities! 🔍 I can help you with our 19-slide AI presentation, search the web for latest AI/ML information, and answer any questions you have. To enable web search, please enter your Gemini API key in the settings below.",
       isUser: false,
       timestamp: new Date(),
       followUpQuestions: [
         "What's in slide 1?",
-        "Show me the presentation agenda",
-        "Explain what AI is",
-        "What are neural networks?"
+        "Search for latest AI news",
+        "Explain neural networks",
+        "What are transformer models?"
       ],
     },
   ]);
@@ -34,6 +35,9 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [geminiApiKey, setGeminiApiKey] = useState('');
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [showApiKey, setShowApiKey] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize speech recognition
@@ -67,6 +71,12 @@ const Chatbot = () => {
       
       setRecognition(recognitionInstance);
     }
+
+    // Load saved API key
+    const savedApiKey = localStorage.getItem('gemini-api-key');
+    if (savedApiKey) {
+      setGeminiApiKey(savedApiKey);
+    }
   }, []);
 
   const scrollToBottom = () => {
@@ -90,198 +100,175 @@ const Chatbot = () => {
     }
   };
 
+  const saveApiKey = () => {
+    localStorage.setItem('gemini-api-key', geminiApiKey);
+    setShowApiKeyInput(false);
+  };
+
+  const searchWithGemini = async (query: string): Promise<string> => {
+    if (!geminiApiKey) {
+      return "Web search is not available. Please add your Gemini API key to enable search functionality.";
+    }
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Search and provide current, accurate information about: ${query}. Include recent developments, key facts, and practical applications. Focus on the latest trends and discoveries in AI/ML if relevant.`
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 1024,
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't find information about that topic.";
+    } catch (error) {
+      console.error('Gemini API error:', error);
+      return "Sorry, I encountered an error while searching. Please check your API key and try again.";
+    }
+  };
+
   const getFollowUpQuestions = (userMessage: string, aiResponse: string): string[] => {
     const userMsg = userMessage.toLowerCase();
     const aiMsg = aiResponse.toLowerCase();
     
     console.log('Generating follow-up for user message:', userMsg);
-    console.log('AI response context:', aiMsg.substring(0, 100) + '...');
     
+    // Search-related follow-ups
+    if (userMsg.includes('search') || userMsg.includes('latest') || userMsg.includes('current')) {
+      return [
+        "Search for AI research papers",
+        "Find latest ML frameworks",
+        "What are current AI trends?",
+        "Search for AI job market"
+      ];
+    }
+
     // Check for specific slide numbers first
     const slideMatch = userMsg.match(/slide\s*(\d+)/);
     if (slideMatch) {
       const slideNum = parseInt(slideMatch[1]);
       const questions = [];
       
-      // Add navigation questions
       if (slideNum > 1) questions.push(`What's in slide ${slideNum - 1}?`);
       if (slideNum < 19) questions.push(`Tell me about slide ${slideNum + 1}`);
+      questions.push("Search for related topics");
       questions.push("Show me the full agenda");
-      
-      // Add topic-specific questions based on slide content
-      if (slideNum === 3) questions.push("What are the different types of AI?");
-      if (slideNum === 7) questions.push("How do neural networks learn?");
-      if (slideNum === 8) questions.push("What makes transformers special?");
-      if (slideNum === 10) questions.push("Try the LLM calculator");
-      if (slideNum === 12) questions.push("Try the RAG Quest demo");
       
       return questions.slice(0, 4);
     }
     
-    // Topic-based follow-ups
+    // Enhanced topic-based follow-ups with search integration
     if (userMsg.includes('neural network') || aiMsg.includes('neural network')) {
       return [
+        "Search for latest neural network research",
         "How do neural networks learn?",
         "What about deep learning?",
-        "Tell me about slide 7 - Neural Networks",
-        "Show me transformer architecture"
+        "Tell me about slide 7 - Neural Networks"
       ];
     }
     
     if (userMsg.includes('transformer') || aiMsg.includes('transformer')) {
       return [
+        "Search for new transformer architectures",
         "What about attention mechanisms?",
         "How do LLMs use transformers?",
-        "Tell me about slide 9 - Generative AI",
-        "What's the difference from CNNs?"
+        "Tell me about slide 9 - Generative AI"
       ];
     }
     
     if (userMsg.includes('ai') && !userMsg.includes('slide')) {
       return [
+        "Search for current AI breakthroughs",
         "What are the main types of AI?",
         "Show me slide 3 - What is AI?",
-        "How has AI evolved over time?",
-        "What are real-world AI applications?"
-      ];
-    }
-    
-    if (userMsg.includes('generative') || aiMsg.includes('generative')) {
-      return [
-        "How do generative models work?",
-        "What about LLMs specifically?",
-        "Tell me about slide 10 - LLM Calculator",
-        "Show me practical examples"
-      ];
-    }
-    
-    if (userMsg.includes('rag') || aiMsg.includes('retrieval')) {
-      return [
-        "Try the RAG Quest demo",
-        "How does RAG improve accuracy?",
-        "What are RAG limitations?",
-        "Tell me about slide 12"
-      ];
-    }
-    
-    if (userMsg.includes('llm') || userMsg.includes('language model')) {
-      return [
-        "How much RAM do LLMs need?",
-        "Try the LLM calculator",
-        "What about LLM security risks?",
-        "Tell me about slide 17"
-      ];
-    }
-    
-    if (userMsg.includes('security') || userMsg.includes('injection')) {
-      return [
-        "Try the injection simulator",
-        "What other AI risks exist?",
-        "How can we protect AI systems?",
-        "Tell me about slide 18"
-      ];
-    }
-    
-    if (userMsg.includes('agentic') || aiMsg.includes('agentic')) {
-      return [
-        "How have AI agents evolved?",
-        "What can agentic AI do today?",
-        "Tell me about slide 14",
-        "Show me practical use cases"
-      ];
-    }
-    
-    if (userMsg.includes('agenda') || userMsg.includes('presentation')) {
-      return [
-        "Tell me about slide 3 - What is AI?",
-        "Jump to slide 8 - Transformers",
-        "Show me the RAG slides",
-        "What about AI security?"
+        "Find latest AI applications"
       ];
     }
     
     if (userMsg.includes('machine learning') || userMsg.includes('ml')) {
       return [
-        "What's the difference with deep learning?",
+        "Search for ML job opportunities",
+        "What's new in machine learning?",
         "Tell me about slide 6 - ML vs DL",
-        "How do I start learning ML?",
-        "Show me practical applications"
+        "Find ML learning resources"
       ];
     }
-    
-    if (userMsg.includes('future') || userMsg.includes('agi')) {
-      return [
-        "When will we achieve AGI?",
-        "What are current AI limitations?",
-        "Tell me about slide 19 - Future of AI",
-        "How will AI change society?"
-      ];
-    }
-    
-    if (userMsg.includes('use case') || userMsg.includes('application')) {
-      return [
-        "What industries use AI most?",
-        "Tell me about slide 15 - Use Cases",
-        "How is AI used in healthcare?",
-        "Show me business applications"
-      ];
-    }
-    
-    if (userMsg.includes('risk') || userMsg.includes('ethic')) {
-      return [
-        "What are the main AI risks?",
-        "Tell me about slide 16 - Risks & Ethics",
-        "How do we ensure fair AI?",
-        "What about job displacement?"
-      ];
-    }
-    
-    // Conversational follow-ups for general questions
-    if (userMsg.includes('hello') || userMsg.includes('hi')) {
-      return [
-        "Show me the presentation agenda",
-        "What's in slide 1?",
-        "Explain what AI is",
-        "Tell me about neural networks"
-      ];
-    }
-    
-    if (userMsg.includes('learn') || userMsg.includes('study')) {
-      return [
-        "What skills do I need for AI?",
-        "Tell me about slide 4 - Data Roles",
-        "How do I start with programming?",
-        "Show me learning resources"
-      ];
-    }
-    
-    // Default contextual questions based on AI response content
-    if (aiMsg.includes('slide')) {
-      const slideInResponse = aiMsg.match(/slide (\d+)/);
-      if (slideInResponse) {
-        const num = parseInt(slideInResponse[1]);
-        return [
-          `What's the next slide after ${num}?`,
-          "Show me related topics",
-          "Give me more details",
-          "How does this connect to other concepts?"
-        ];
-      }
-    }
-    
-    // Generic but contextual fallbacks
+
+    // Default contextual questions with search
     return [
+      "Search for more information",
       "Can you explain this in simpler terms?",
       "Show me a related slide",
-      "What's a practical example?",
-      "How can I learn more about this?"
+      "What's a practical example?"
     ];
   };
 
-  const getAIResponse = (userMessage: string): string => {
+  const getAIResponse = async (userMessage: string): Promise<string> => {
     const message = userMessage.toLowerCase();
     
-    // Check for specific slide numbers first
+    // Check if user wants to search
+    if (message.includes('search') || message.includes('find') || message.includes('latest') || message.includes('current') || message.includes('recent')) {
+      return await searchWithGemini(userMessage);
+    }
+
+    // Enhanced AI/ML knowledge base
+    if (message.includes('machine learning') && !message.includes('slide')) {
+      return "Machine Learning is a subset of AI where algorithms learn patterns from data to make predictions or decisions. There are three main types: Supervised Learning (learning from labeled examples like email spam detection), Unsupervised Learning (finding hidden patterns in data like customer segmentation), and Reinforcement Learning (learning through trial and error like game playing). ML powers recommendation systems, fraud detection, medical diagnosis, and autonomous vehicles. Key algorithms include linear regression, decision trees, neural networks, and support vector machines.";
+    }
+
+    if (message.includes('deep learning') && !message.includes('slide')) {
+      return "Deep Learning uses artificial neural networks with multiple layers (hence 'deep') to automatically learn hierarchical representations of data. Each layer learns increasingly complex features - in image recognition, early layers detect edges, middle layers recognize shapes, and deeper layers identify objects. Deep learning excels at computer vision, natural language processing, and speech recognition. Popular architectures include CNNs for images, RNNs for sequences, and Transformers for language. It requires large datasets and significant computational power but achieves human-level performance in many tasks.";
+    }
+
+    if (message.includes('neural network') && !message.includes('slide')) {
+      return "Neural Networks are computational models inspired by biological neurons in the brain. They consist of interconnected nodes (artificial neurons) organized in layers: input layer (receives data), hidden layers (process information), and output layer (produces results). Each connection has a weight that determines its influence. During training, the network adjusts these weights using backpropagation to minimize prediction errors. Neural networks can approximate any continuous function and are universal function approximators, making them incredibly versatile for pattern recognition, classification, and regression tasks.";
+    }
+
+    if (message.includes('transformer') && !message.includes('slide')) {
+      return "Transformers revolutionized AI with the 'attention mechanism', allowing models to focus on different parts of input simultaneously rather than processing sequentially. The key innovation is self-attention, which helps the model understand relationships between all words in a sentence regardless of their distance. Transformers consist of encoder-decoder architectures with multi-head attention, positional encoding, and feed-forward networks. They're the foundation of modern language models like GPT, BERT, and T5, and have been adapted for computer vision (Vision Transformers) and other domains.";
+    }
+
+    if (message.includes('rag') || message.includes('retrieval')) {
+      return "Retrieval-Augmented Generation (RAG) combines large language models with external knowledge databases to provide more accurate, up-to-date, and contextually relevant responses. The process involves: 1) Retrieving relevant documents from a knowledge base using vector search, 2) Augmenting the user's query with this context, 3) Generating responses using both the context and the LLM's knowledge. RAG helps overcome knowledge cutoffs, reduces hallucinations, enables domain-specific expertise, and allows for real-time information updates without retraining the entire model.";
+    }
+
+    if (message.includes('generative ai') || message.includes('generative')) {
+      return "Generative AI creates new content rather than just analyzing existing data. It includes text generation (GPT models), image creation (DALL-E, Midjourney, Stable Diffusion), music composition (AIVA), code generation (GitHub Copilot), and video synthesis. These models learn the underlying patterns and distributions of their training data to generate novel, realistic outputs. Key techniques include Generative Adversarial Networks (GANs), Variational Autoencoders (VAEs), and autoregressive models. Applications span creative industries, software development, drug discovery, and content creation.";
+    }
+
+    if (message.includes('llm') || message.includes('large language model')) {
+      return "Large Language Models (LLMs) are AI systems trained on vast amounts of text data to understand and generate human-like language. They use transformer architecture and are trained using self-supervised learning on internet text. Modern LLMs like GPT-4, Claude, and Gemini can write, summarize, translate, code, analyze, and engage in conversations. They exhibit emergent abilities - capabilities that appear suddenly at certain scales. Key challenges include hallucinations, bias, computational requirements, and alignment with human values. They're being integrated into search, coding assistants, and creative tools.";
+    }
+
+    if (message.includes('computer vision') || message.includes('cv')) {
+      return "Computer Vision enables machines to interpret and understand visual information from the world. Key tasks include image classification, object detection, semantic segmentation, and facial recognition. Modern CV relies heavily on Convolutional Neural Networks (CNNs) and Vision Transformers. Applications include autonomous vehicles, medical imaging, surveillance, augmented reality, and quality control in manufacturing. Recent advances include few-shot learning, self-supervised learning, and multimodal models that combine vision with language understanding.";
+    }
+
+    if (message.includes('natural language processing') || message.includes('nlp')) {
+      return "Natural Language Processing (NLP) enables computers to understand, interpret, and generate human language. Core tasks include tokenization, part-of-speech tagging, named entity recognition, sentiment analysis, machine translation, and text summarization. Modern NLP is dominated by transformer-based models and large language models. Applications include chatbots, search engines, voice assistants, content moderation, and automated writing. Challenges include handling ambiguity, context, cultural nuances, and maintaining factual accuracy.";
+    }
+
+    if (message.includes('reinforcement learning') || message.includes('rl')) {
+      return "Reinforcement Learning (RL) is learning through interaction with an environment to maximize cumulative rewards. An agent takes actions, receives rewards or penalties, and learns optimal strategies through trial and error. Key concepts include states, actions, rewards, policies, and value functions. RL has achieved superhuman performance in games (AlphaGo, Dota 2), robotics, autonomous driving, and recommendation systems. Modern approaches include Deep Q-Networks (DQN), Policy Gradient methods, and Actor-Critic algorithms.";
+    }
+
+    // Check for specific slide numbers
     const slideNumberMatch = message.match(/slide\s*(\d+)/);
     if (slideNumberMatch) {
       const slideNum = parseInt(slideNumberMatch[1]);
@@ -330,52 +317,9 @@ const Chatbot = () => {
       }
     }
 
-    // Check for general slide/agenda questions
-    if (message.includes('agenda') || message.includes('slides') || message.includes('presentation') || message.includes('outline')) {
-      return "Our presentation covers 19 comprehensive slides: 1) Introduction, 2) Why AI Matters Now, 3) What is AI?, 4) Data Roles Comparison, 5) Evolution of AI, 6) ML vs DL, 7) Neural Networks, 8) Transformer Architecture, 9) Generative AI, 10) LLM RAM Calculator, 11) RAG Systems, 12) RAG Quest, 13) Agentic AI, 14) Evolution of Agentic AI, 15) Use Cases, 16) Risks & Ethics, 17) LLM Security, 18) LLM Injection Simulator, and 19) Future of AI. Which topic interests you most?";
-    }
-
-    // Check for topic-specific questions (without slide references)
-    if (message.includes('evolution of agentic') || message.includes('agentic evolution')) {
-      return "The Evolution of Agentic AI shows our progression from simple rule-based agents to sophisticated autonomous systems. We're moving toward AI that can understand context, plan strategically, and adapt to changing environments. This represents a major shift from reactive to proactive AI systems.";
-    }
-
-    // AI topic-specific responses (without slide references)
-    if (message.includes('neural network') || message.includes('neural')) {
-      return "Neural networks are inspired by the human brain and consist of interconnected nodes (neurons) that process information in layers. Each connection has a weight that determines influence, and through training, these weights adjust to recognize patterns. They're fundamental to modern AI!";
-    }
-    
-    if (message.includes('transformer') || message.includes('attention')) {
-      return "Transformers revolutionized AI with the 'attention mechanism', allowing models to focus on different parts of input simultaneously. This makes them incredibly powerful for language tasks and forms the basis of modern language models like GPT and BERT.";
-    }
-    
-    if (message.includes('rag') || message.includes('retrieval')) {
-      return "RAG (Retrieval-Augmented Generation) combines large language models with external knowledge databases. It first retrieves relevant information, then uses that context to generate more accurate, up-to-date responses. It's great for overcoming knowledge cutoffs!";
-    }
-    
-    if (message.includes('generative ai') || message.includes('generative')) {
-      return "Generative AI creates new content rather than just analyzing existing data - text, images, code, music, and more. Models like GPT, DALL-E, and Midjourney learn patterns from training data to create novel, creative outputs.";
-    }
-    
-    if (message.includes('llm') || message.includes('language model')) {
-      return "Large Language Models (LLMs) are AI systems trained on vast amounts of text data to understand and generate human-like language. They can write, summarize, translate, code, and engage in conversations. Examples include GPT, Claude, and Gemini.";
-    }
-    
-    if (message.includes('machine learning') || message.includes('ml')) {
-      return "Machine Learning is where computers learn patterns from data without explicit programming. There are three main types: supervised (learning from labeled examples), unsupervised (finding hidden patterns), and reinforcement learning (learning through trial and error).";
-    }
-    
-    if (message.includes('deep learning') || message.includes('dl')) {
-      return "Deep Learning uses neural networks with many layers to automatically learn hierarchical data representations. Each layer learns increasingly complex features - starting with edges in images and building up to recognizing objects. It's particularly powerful for vision and language tasks.";
-    }
-    
-    if (message.includes('agentic') || message.includes('agent')) {
-      return "Agentic AI refers to autonomous AI systems that can plan, use tools, make decisions, and take actions independently to achieve goals. Unlike traditional prompt-response AI, agentic systems can complete complex multi-step tasks without constant human guidance.";
-    }
-
-    // General conversational responses
+    // General conversational responses with enhanced knowledge
     if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-      return "Hello! I'm JAGA, your AI assistant. I can help you with our AI presentation slides, explain AI concepts, or chat about technology in general. What would you like to know about?";
+      return "Hello! I'm JAGA, your AI assistant with web search capabilities! I can help you with our AI presentation slides, search for the latest AI/ML information, explain complex concepts, or just chat about technology. What would you like to explore today?";
     }
     
     if (message.includes('how are you') || message.includes('how do you do')) {
@@ -412,9 +356,9 @@ const Chatbot = () => {
 
     // Default responses for unclear questions
     const defaultResponses = [
-      "That's an interesting question! I can help you with our AI presentation, explain technology concepts, or just have a conversation. Could you tell me more about what you're curious about?",
-      "I'd love to help you with that! Feel free to ask about AI topics, our presentation slides, technology in general, or anything else on your mind. What interests you most?",
-      "Great question! I'm here to help with both our AI presentation content and general questions. You can ask about specific slides, AI concepts, technology trends, or just chat. What would you like to explore?",
+      "That's an interesting question! I can help you with our AI presentation, search for the latest information, explain technology concepts, or just have a conversation. Could you tell me more about what you're curious about?",
+      "I'd love to help you with that! Feel free to ask about AI topics, our presentation slides, search for current information, or anything else on your mind. What interests you most?",
+      "Great question! I'm here to help with both our AI presentation content and real-time search capabilities. You can ask about specific slides, AI concepts, or search for the latest developments. What would you like to explore?",
     ];
     
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
@@ -435,12 +379,12 @@ const Chatbot = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI thinking time
-    setTimeout(() => {
-      const responseText = getAIResponse(currentInput);
+    try {
+      const responseText = await getAIResponse(currentInput);
       const followUpQuestions = getFollowUpQuestions(currentInput, responseText);
-      
-      console.log('Generated follow-up questions:', followUpQuestions);
+      const isSearchResult = currentInput.toLowerCase().includes('search') || 
+                           currentInput.toLowerCase().includes('find') || 
+                           currentInput.toLowerCase().includes('latest');
       
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -448,11 +392,22 @@ const Chatbot = () => {
         isUser: false,
         timestamp: new Date(),
         followUpQuestions,
+        isSearchResult,
       };
       
       setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Sorry, I encountered an error. Please try again.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+    }
   };
 
   const handleFollowUpClick = (question: string) => {
@@ -487,14 +442,14 @@ const Chatbot = () => {
           </motion.div>
         </Button>
         
-        {/* Notification dot for new feature */}
+        {/* Enhanced notification dot with search icon */}
         {!isOpen && (
           <motion.div
-            className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center"
+            className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full flex items-center justify-center"
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            <Bot className="h-2 w-2 text-white" />
+            <Search className="h-2 w-2 text-white" />
           </motion.div>
         )}
       </motion.div>
@@ -513,19 +468,74 @@ const Chatbot = () => {
               <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg pb-3 flex-shrink-0 relative">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Bot className="h-5 w-5" />
+                    <div className="relative">
+                      <Bot className="h-5 w-5" />
+                      <Search className="h-2 w-2 absolute -top-1 -right-1 text-green-300" />
+                    </div>
                     <CardTitle className="text-lg">JAGA - AI Assistant</CardTitle>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsOpen(false)}
-                    className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowApiKeyInput(!showApiKeyInput)}
+                      className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
+                      title="Configure API Key"
+                    >
+                      <Key className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setIsOpen(false)}
+                      className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <p className="text-blue-100 text-sm mt-1">Ask me about slides, AI topics, or anything!</p>
+                <p className="text-blue-100 text-sm mt-1">Ask me about slides, search the web, or discuss AI/ML topics!</p>
+                
+                {/* API Key Input */}
+                {showApiKeyInput && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-3 p-3 bg-white/10 rounded-lg"
+                  >
+                    <p className="text-xs text-blue-100 mb-2">Enter your Gemini API key for web search:</p>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Input
+                          type={showApiKey ? "text" : "password"}
+                          value={geminiApiKey}
+                          onChange={(e) => setGeminiApiKey(e.target.value)}
+                          placeholder="Enter Gemini API key..."
+                          className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/70 pr-8"
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setShowApiKey(!showApiKey)}
+                          className="absolute right-1 top-1 h-6 w-6 text-white/70 hover:bg-white/10"
+                        >
+                          {showApiKey ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                        </Button>
+                      </div>
+                      <Button
+                        onClick={saveApiKey}
+                        size="sm"
+                        className="bg-green-500 hover:bg-green-600 text-white px-3"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                    <p className="text-xs text-blue-200 mt-1">
+                      Get your free API key from <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="underline">Google AI Studio</a>
+                    </p>
+                  </motion.div>
+                )}
               </CardHeader>
               
               <CardContent className="p-0 flex-1 flex flex-col min-h-0">
@@ -543,9 +553,17 @@ const Chatbot = () => {
                             className={`p-3 rounded-lg ${
                               message.isUser
                                 ? 'bg-blue-500 text-white'
+                                : message.isSearchResult
+                                ? 'bg-green-50 text-gray-800 border border-green-200'
                                 : 'bg-gray-100 text-gray-800'
                             }`}
                           >
+                            {message.isSearchResult && (
+                              <div className="flex items-center gap-1 mb-2">
+                                <Search className="h-3 w-3 text-green-600" />
+                                <span className="text-xs text-green-600 font-medium">Web Search Result</span>
+                              </div>
+                            )}
                             <p className="text-sm">{message.text}</p>
                             <p className="text-xs opacity-70 mt-1">
                               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -613,7 +631,7 @@ const Chatbot = () => {
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      placeholder="Ask about slides, AI topics, or anything..."
+                      placeholder="Ask about slides, search the web, or discuss AI/ML..."
                       className="flex-1"
                       disabled={isTyping}
                     />
@@ -638,6 +656,11 @@ const Chatbot = () => {
                   {isListening && (
                     <p className="text-xs text-gray-500 mt-1 text-center">
                       🎤 Listening... Speak now
+                    </p>
+                  )}
+                  {!geminiApiKey && (
+                    <p className="text-xs text-orange-600 mt-1 text-center">
+                      💡 Add your Gemini API key to enable web search
                     </p>
                   )}
                 </div>
