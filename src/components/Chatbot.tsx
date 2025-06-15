@@ -227,6 +227,46 @@ const Chatbot = () => {
       return await searchWithGemini(userMessage);
     }
 
+    // Handle agenda/presentation overview requests
+    if (message.includes('agenda') || message.includes('full agenda') || message.includes('presentation outline') || message.includes('all slides') || message.includes('slide topics') || message.includes('presentation topics')) {
+      return `Here's the complete agenda for our "AI with JAGA" presentation with all 19 slides:
+
+📋 **Complete Presentation Agenda:**
+
+**🎯 Introduction & Foundation (Slides 1-4)**
+1. Introduction - Welcome to AI with JAGA
+2. Why AI Matters Now - Current importance and impact
+3. What is AI? - Core definitions and concepts
+4. Data Roles Comparison - Different roles in the AI ecosystem
+
+**🧠 Core AI Concepts (Slides 5-8)**
+5. Evolution of AI - Historical development and milestones
+6. ML vs DL - Machine Learning vs Deep Learning comparison
+7. Neural Networks - How artificial neurons work
+8. Transformer Architecture - The foundation of modern AI
+
+**🚀 Modern AI Applications (Slides 9-12)**
+9. Generative AI - Creating new content with AI
+10. LLM RAM Calculator - Interactive tool for model requirements
+11. RAG Systems - Retrieval-Augmented Generation explained
+12. RAG Quest - Interactive RAG system exploration
+
+**🤖 Advanced AI Systems (Slides 13-14)**
+13. Agentic AI - Autonomous AI systems that take action
+14. Evolution of Agentic AI - From simple to sophisticated agents
+
+**🌍 Real-World Impact (Slides 15-17)**
+15. Use Cases - Practical AI applications across industries
+16. Risks & Ethics - Responsible AI development and challenges
+17. LLM Security - Protecting AI systems from threats
+
+**🔮 Interactive & Future (Slides 18-19)**
+18. LLM Injection Simulator - Hands-on security demonstration
+19. Future of AI - What's next in artificial intelligence
+
+Each slide includes interactive elements, practical examples, and opportunities for deeper exploration. Would you like me to explain any specific slide in detail?`;
+    }
+
     // Enhanced AI/ML knowledge base
     if (message.includes('machine learning') && !message.includes('slide')) {
       return "Machine Learning is a subset of AI where algorithms learn patterns from data to make predictions or decisions. There are three main types: Supervised Learning (learning from labeled examples like email spam detection), Unsupervised Learning (finding hidden patterns in data like customer segmentation), and Reinforcement Learning (learning through trial and error like game playing). ML powers recommendation systems, fraud detection, medical diagnosis, and autonomous vehicles. Key algorithms include linear regression, decision trees, neural networks, and support vector machines.";
