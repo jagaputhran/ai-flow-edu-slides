@@ -111,7 +111,7 @@ const Chatbot = () => {
     }
 
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -319,7 +319,7 @@ const Chatbot = () => {
 
     // General conversational responses with enhanced knowledge
     if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-      return "Hello! I'm JAGA, your AI assistant with web search capabilities! I can help you with our AI presentation slides, search for the latest AI/ML information, explain complex concepts, or just chat about technology. What would you like to explore today?";
+      return "Hello! I'm JAGA, your AI assistant with web search capabilities! I can help you with our AI presentation slides, search for the latest information, explain complex concepts, or just chat about technology. What would you like to explore today?";
     }
     
     if (message.includes('how are you') || message.includes('how do you do')) {
@@ -504,7 +504,7 @@ const Chatbot = () => {
                     exit={{ opacity: 0, height: 0 }}
                     className="mt-3 p-3 bg-white/10 rounded-lg"
                   >
-                    <p className="text-xs text-blue-100 mb-2">Enter your Gemini API key for web search:</p>
+                    <p className="text-xs text-blue-100 mb-2">Enter your Gemini API key for web search (using gemini-1.5-flash model):</p>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
                         <Input
