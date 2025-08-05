@@ -1,4 +1,0 @@
-project_id = "uqwowuzzzovettfkhwwf"
-
-[functions.gemini-search]
-verify_jwt = false

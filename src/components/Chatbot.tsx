@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, X, Bot, Mic, MicOff, Search } from 'lucide-react';
+import { MessageCircle, Send, X, Bot, Mic, MicOff, Search, Key, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
@@ -20,7 +20,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm JAGA, your AI learning companion with web search capabilities! 🔍 I can help you with our 19-slide AI presentation, search the web for latest AI/ML information, and answer any questions you have. Web search is now powered by our secure backend!",
+      text: "Hi! I'm JAGA, your AI learning companion with web search capabilities! 🔍 I can help you with our 19-slide AI presentation, search the web for latest AI/ML information, and answer any questions you have. To enable web search, please enter your Gemini API key in the settings below.",
       isUser: false,
       timestamp: new Date(),
       followUpQuestions: [
@@ -35,6 +35,9 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [geminiApiKey, setGeminiApiKey] = useState('');
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [showApiKey, setShowApiKey] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize speech recognition
@@ -69,6 +72,11 @@ const Chatbot = () => {
       setRecognition(recognitionInstance);
     }
 
+    // Load saved API key
+    const savedApiKey = localStorage.getItem('gemini-api-key');
+    if (savedApiKey) {
+      setGeminiApiKey(savedApiKey);
+    }
   }, []);
 
   const scrollToBottom = () => {
@@ -92,15 +100,35 @@ const Chatbot = () => {
     }
   };
 
+  const saveApiKey = () => {
+    localStorage.setItem('gemini-api-key', geminiApiKey);
+    setShowApiKeyInput(false);
+  };
 
   const searchWithGemini = async (query: string): Promise<string> => {
+    if (!geminiApiKey) {
+      return "Web search is not available. Please add your Gemini API key to enable search functionality.";
+    }
+
     try {
-      const response = await fetch('https://uqwowuzzzovettfkhwwf.functions.supabase.co/functions/v1/gemini-search', {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Search and provide current, accurate information about: ${query}. Include recent developments, key facts, and practical applications. Focus on the latest trends and discoveries in AI/ML if relevant.`
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 1024,
+          }
+        }),
       });
 
       if (!response.ok) {
@@ -108,14 +136,10 @@ const Chatbot = () => {
       }
 
       const data = await response.json();
-      if (data.error) {
-        throw new Error(data.error);
-      }
-      
-      return data.result || "I couldn't find information about that topic.";
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't find information about that topic.";
     } catch (error) {
-      console.error('Search error:', error);
-      return "Sorry, I encountered an error while searching. Please try again.";
+      console.error('Gemini API error:', error);
+      return "Sorry, I encountered an error while searching. Please check your API key and try again.";
     }
   };
 
@@ -494,6 +518,15 @@ Each slide includes interactive elements, practical examples, and opportunities 
                     <Button
                       variant="ghost"
                       size="icon"
+                      onClick={() => setShowApiKeyInput(!showApiKeyInput)}
+                      className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
+                      title="Configure API Key"
+                    >
+                      <Key className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => setIsOpen(false)}
                       className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
                     >
@@ -502,6 +535,47 @@ Each slide includes interactive elements, practical examples, and opportunities 
                   </div>
                 </div>
                 <p className="text-blue-100 text-sm mt-1">Ask me about slides, search the web, or discuss AI/ML topics!</p>
+                
+                {/* API Key Input */}
+                {showApiKeyInput && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-3 p-3 bg-white/10 rounded-lg"
+                  >
+                    <p className="text-xs text-blue-100 mb-2">Enter your Gemini API key for web search (using gemini-1.5-flash model):</p>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Input
+                          type={showApiKey ? "text" : "password"}
+                          value={geminiApiKey}
+                          onChange={(e) => setGeminiApiKey(e.target.value)}
+                          placeholder="Enter Gemini API key..."
+                          className="text-sm bg-white/10 border-white/20 text-white placeholder:text-white/70 pr-8"
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setShowApiKey(!showApiKey)}
+                          className="absolute right-1 top-1 h-6 w-6 text-white/70 hover:bg-white/10"
+                        >
+                          {showApiKey ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                        </Button>
+                      </div>
+                      <Button
+                        onClick={saveApiKey}
+                        size="sm"
+                        className="bg-green-500 hover:bg-green-600 text-white px-3"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                    <p className="text-xs text-blue-200 mt-1">
+                      Get your free API key from <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="underline">Google AI Studio</a>
+                    </p>
+                  </motion.div>
+                )}
               </CardHeader>
               
               <CardContent className="p-0 flex-1 flex flex-col min-h-0">
@@ -622,6 +696,11 @@ Each slide includes interactive elements, practical examples, and opportunities 
                   {isListening && (
                     <p className="text-xs text-gray-500 mt-1 text-center">
                       🎤 Listening... Speak now
+                    </p>
+                  )}
+                  {!geminiApiKey && (
+                    <p className="text-xs text-orange-600 mt-1 text-center">
+                      💡 Add your Gemini API key to enable web search
                     </p>
                   )}
                 </div>
